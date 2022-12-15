@@ -1,5 +1,5 @@
 {
-    "name": "duckdb",
+    "name": "duckdb-lambda",
     "main": "./lib/duckdb.js",
     "types": "./lib/duckdb.d.ts",
     "version": "0.6.1",
