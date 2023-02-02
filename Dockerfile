@@ -1,6 +1,6 @@
 FROM amazon/aws-lambda-nodejs:16 as builder
 
-ARG DUCKDB_VERSION=v0.6.1
+ARG DUCKDB_VERSION=master
 
 # Install dependencies
 RUN yum update -y && \
@@ -9,8 +9,7 @@ RUN yum update -y && \
   ln -s /usr/bin/cmake3 /usr/bin/cmake
 
 # Get DuckDB sources
-#RUN mkdir -p /tmp/from-git && cd /tmp/from-git && git clone https://github.com/duckdb/duckdb.git --branch $DUCKDB_VERSION
-RUN mkdir -p /tmp/from-git && cd /tmp/from-git && git clone https://github.com/duckdb/duckdb.git --branch master && cd duckdb && git fetch --all --tags
+RUN mkdir -p /tmp/from-git && cd /tmp/from-git && git clone https://github.com/duckdb/duckdb.git --branch $DUCKDB_VERSION && cd duckdb && git fetch --all --tags
 
 # Copy custom Makefile (less parallelism)
 COPY src/Makefile /tmp/from-git/duckdb/tools/nodejs/Makefile
