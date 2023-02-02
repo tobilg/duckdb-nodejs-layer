@@ -12,4 +12,4 @@ mkdir -p $PWD/release
 docker build -t duckdb-lambda .
 
 # Copy release
-docker run -v $PWD/release:/opt/mount --rm -ti duckdb-lambda bash -c "cp /tmp/release/duckdb-layer.zip /opt/mount/"
+#docker run -v $PWD/release:/opt/mount --rm -ti duckdb-lambda bash -c "cp /tmp/release/duckdb-layer.zip /opt/mount/"
