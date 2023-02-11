@@ -1,0 +1,42 @@
+name: Build DuckDB Lambda Layer
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  
+  deploy:
+    name: Build and upload DuckDB Lambda layer
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install AWS CLI
+        uses: unfor19/install-aws-cli-action@v1
+
+      # For more info: https://github.com/aws-actions/configure-aws-credentials
+      # - name: Configure AWS credentials
+      #   uses: aws-actions/configure-aws-credentials@v1
+      #   with:
+      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Build layer
+        run: |
+          # Cleanup
+          rm -rf $PWD/release
+
+          # Create release folder
+          mkdir -p $PWD/release
+
+          # Run build
+          docker build -t duckdb-lambda .
+
+          # Copy release from image
+          docker run -v $PWD/release:/opt/mount --rm -ti --entrypoint /bin/bash duckdb-lambda -c "cp /tmp/release/duckdb-layer.zip /opt/mount/"          
+
+      - name: Publish layer
+        run: publish_layer.sh
