@@ -7,7 +7,7 @@ on:
 jobs:
   
   deploy:
-    name: Upload Layer to AWS Lambda
+    name: Build and upload DuckDB Lambda layer
     runs-on: ubuntu-latest
 
     steps:
@@ -21,9 +21,7 @@ jobs:
       #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
       #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      - name: Build
-        env:
-          release_bucket: dfgdfgdfg
+      - name: Build layer
         run: |
           # Cleanup
           rm -rf $PWD/release
@@ -33,3 +31,10 @@ jobs:
 
           # Run build
           docker build -t duckdb-lambda .
+
+          # Copy release from image
+          docker run -v $PWD/release:/opt/mount --rm -ti --entrypoint /bin/bash duckdb-lambda -c "cp /tmp/release/duckdb-layer.zip /opt/mount/"          
+
+      - name: Publish layer
+        uses: unfor19/install-aws-cli-action@v1
+        run: publish_layer.sh
