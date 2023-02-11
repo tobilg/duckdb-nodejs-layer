@@ -14,6 +14,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Install AWS CLI
+        uses: unfor19/install-aws-cli-action@v1
+
       # For more info: https://github.com/aws-actions/configure-aws-credentials
       # - name: Configure AWS credentials
       #   uses: aws-actions/configure-aws-credentials@v1
@@ -36,5 +39,4 @@ jobs:
           docker run -v $PWD/release:/opt/mount --rm -ti --entrypoint /bin/bash duckdb-lambda -c "cp /tmp/release/duckdb-layer.zip /opt/mount/"          
 
       - name: Publish layer
-        uses: unfor19/install-aws-cli-action@v1
         run: publish_layer.sh
