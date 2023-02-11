@@ -39,4 +39,4 @@ jobs:
           docker run -v $PWD/release:/opt/mount --rm --entrypoint /bin/bash duckdb-lambda -c "cp /tmp/release/duckdb-layer.zip /opt/mount/"          
 
       - name: Publish layer
-        run: publish_layer.sh
+        run: bash $PWD/publish_layer.sh
