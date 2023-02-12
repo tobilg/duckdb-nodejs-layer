@@ -1,0 +1,44 @@
+{
+  "name": "duckdb-nodejs-layer",
+  "main": "./lib/duckdb.js",
+  "types": "./lib/duckdb.d.ts",
+  "version": "0.6.1",
+  "description": "DuckDB node.js API",
+  "scripts": {
+    "pretest": "node test/support/createdb.js",
+    "test": "mocha -R spec --timeout 480000 --expose-gc"
+  },
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.0",
+    "@types/node": "^18.11.0",
+    "chai": "^4.3.6",
+    "mocha": "^8.3.0",
+    "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.0.0",
+    "typescript": "^4.8.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tobilg/duckdb-nodejs-layer.git"
+  },
+  "ts-node": {
+    "require": [
+      "tsconfig-paths/register"
+    ]
+  },
+  "keywords": [
+    "database",
+    "sql",
+    "duckdb"
+  ],
+  "author": "TobiLG",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tobilg/duckdb-nodejs-layer/issues"
+  },
+  "homepage": "https://www.duckdb.org"
+}
