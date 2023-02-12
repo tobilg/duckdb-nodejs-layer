@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 # AWS Regions
-REGIONS=$(aws ssm get-parameters-by-path \
+REGIONS=$(aws ssm get-parameters-by-path --region us-east-1 \
     --path /aws/service/global-infrastructure/regions \
     --query 'Parameters[].Value | sort(@)' --output text)
 
