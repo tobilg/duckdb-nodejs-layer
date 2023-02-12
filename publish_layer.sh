@@ -3,11 +3,10 @@
 # AWS Regions
 REGIONS=$(aws ssm get-parameters-by-path \
     --path /aws/service/global-infrastructure/regions \
-    --query 'Parameters[].Value | sort(@)' 
-    --output text)
+    --query 'Parameters[].Value | sort(@)' --output text)
 
 LAYER_NAME="duckdb-nodejs-layer"
-DESCRIPTION="Run DuckDB Node.js in AWS Lambda (https://github.com/tobilg/duckdb-lambda)"
+DESCRIPTION="Run DuckDB Node.js in AWS Lambda (https://github.com/tobilg/duckdb-nodejs-layer)"
 COMPATIBLE_RUNTIMES="nodejs14.x nodejs16.x nodejs18.x"
 COMPATIBLE_ARCHITECTURES="x86_64"
 

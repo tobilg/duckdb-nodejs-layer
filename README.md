@@ -1,16 +1,56 @@
-# duckdb-lambda
-Packaging DuckDB for Lambda functions
+# duckdb-nodejs-layer
+Packaging DuckDB for usage in AWS Lambda functions with Node.js, and publishing as a public Lambda layer.
 
-## Building
+## Usage
+You can use the published layer in your own serverless applications by referencing it as outlined in the different framework's docs:
 
-Run `$ ./build_layer.sh` to build the DuckDB custom Node.js client
+* [Serverless Framework](https://www.serverless.com/framework/docs/providers/aws/guide/serverless.yml/#functions)
+* [SAM](https://aws.amazon.com/blogs/compute/working-with-aws-lambda-and-lambda-layers-in-aws-sam/)
+* [CDK](https://docs.aws.amazon.com/cdk/api/v1/docs/aws-lambda-readme.html#layers)
+* [CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-function.html#cfn-lambda-function-layers)
 
-## Getting the artifacts
+The layer gets automatically published to all currently available (in the moment of publishing) AWS regions.
 
-Run `docker run -v $PWD/release:/opt/mount --rm -ti --entrypoint bash duckdb-lambda` to get a shell in the container. After that, run `cp /tmp/release/duckdb-layer.zip /opt/mount/` to copy the artifacts to the mounted directory.
+The ARNs follow the following logic:
+```text
+arn:aws:lambda:$REGION:041475135427:layer:duckdb-nodejs-layer:$VERSION
+```
 
-To unzip the artifacts, run `cd release && unzip duckdb-layer.zip`.
+The **ARNs** of the latest version of the DuckDB Node.js Lambda layer are:
+| Region          | Layer ARN |
+|-----------------|-----------|
+| af-south-1 | arn:aws:lambda:af-south-1:041475135427:layer:duckdb-nodejs-layer:1 |
+| ap-east-1 | arn:aws:lambda:ap-east-1:041475135427:layer:duckdb-nodejs-layer:1 |
+| ap-northeast-1 | arn:aws:lambda:ap-northeast-1:041475135427:layer:duckdb-nodejs-layer:1 |
+| ap-northeast-2 | arn:aws:lambda:ap-northeast-2:041475135427:layer:duckdb-nodejs-layer:1 |
+| ap-northeast-3 | arn:aws:lambda:ap-northeast-3:041475135427:layer:duckdb-nodejs-layer:1 |
+| ap-south-1 | arn:aws:lambda:ap-south-1:041475135427:layer:duckdb-nodejs-layer:1 |
+| ap-south-2 | arn:aws:lambda:ap-south-2:041475135427:layer:duckdb-nodejs-layer:1 |
+| ap-southeast-1 | arn:aws:lambda:ap-southeast-1:041475135427:layer:duckdb-nodejs-layer:1 |
+| ap-southeast-2 | arn:aws:lambda:ap-southeast-2:041475135427:layer:duckdb-nodejs-layer:1 |
+| ap-southeast-3 | arn:aws:lambda:ap-southeast-3:041475135427:layer:duckdb-nodejs-layer:1 |
+| ap-southeast-4 | arn:aws:lambda:ap-southeast-4:041475135427:layer:duckdb-nodejs-layer:1 |
+| ca-central-1 | arn:aws:lambda:ca-central-1:041475135427:layer:duckdb-nodejs-layer:1 |
+| cn-north-1 | arn:aws:lambda:cn-north-1:041475135427:layer:duckdb-nodejs-layer:1 |
+| cn-northwest-1 | arn:aws:lambda:cn-northwest-1:041475135427:layer:duckdb-nodejs-layer:1 |
+| eu-central-1 | arn:aws:lambda:eu-central-1:041475135427:layer:duckdb-nodejs-layer:1 |
+| eu-central-2 | arn:aws:lambda:eu-central-2:041475135427:layer:duckdb-nodejs-layer:1 |
+| eu-north-1 | arn:aws:lambda:eu-north-1:041475135427:layer:duckdb-nodejs-layer:1 |
+| eu-south-1 | arn:aws:lambda:eu-south-1:041475135427:layer:duckdb-nodejs-layer:1 |
+| eu-south-2 | arn:aws:lambda:eu-south-2:041475135427:layer:duckdb-nodejs-layer:1 |
+| eu-west-1 | arn:aws:lambda:eu-west-1:041475135427:layer:duckdb-nodejs-layer:1 |
+| eu-west-2 | arn:aws:lambda:eu-west-2:041475135427:layer:duckdb-nodejs-layer:1 |
+| eu-west-3 | arn:aws:lambda:eu-west-3:041475135427:layer:duckdb-nodejs-layer:1 |
+| me-central-1 | arn:aws:lambda:me-central-1:041475135427:layer:duckdb-nodejs-layer:1 |
+| me-south-1 | arn:aws:lambda:me-south-1:041475135427:layer:duckdb-nodejs-layer:1 |
+| sa-east-1 | arn:aws:lambda:sa-east-1:041475135427:layer:duckdb-nodejs-layer:1 |
+| us-east-1 | arn:aws:lambda:us-east-1:041475135427:layer:duckdb-nodejs-layer:1 |
+| us-east-2 | arn:aws:lambda:us-east-2:041475135427:layer:duckdb-nodejs-layer:1 |
+| us-gov-east-1 | arn:aws:lambda:us-gov-east-1:041475135427:layer:duckdb-nodejs-layer:1 |
+| us-gov-west-1 | arn:aws:lambda:us-gov-west-1:041475135427:layer:duckdb-nodejs-layer:1 |
+| us-west-1 | arn:aws:lambda:us-west-1:041475135427:layer:duckdb-nodejs-layer:1 |
 
-## Publishing the layer
+## Example usage
+Hava a look at the example repository which uses this AWS Lambda layer:
 
-You need an installed Serverless Framework (v2/v3). Then run `sls deploy`.
+* https://github.com/tobilg/serverless-duckdb
