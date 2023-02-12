@@ -19,36 +19,36 @@ arn:aws:lambda:$REGION:041475135427:layer:duckdb-nodejs-layer:$VERSION
 The **ARNs** of the latest version of the DuckDB Node.js Lambda layer are:
 | Region          | Layer ARN |
 |-----------------|-----------|
-| af-south-1 | arn:aws:lambda:af-south-1:041475135427:layer:duckdb-nodejs-layer:1 |
-| ap-east-1 | arn:aws:lambda:ap-east-1:041475135427:layer:duckdb-nodejs-layer:1 |
-| ap-northeast-1 | arn:aws:lambda:ap-northeast-1:041475135427:layer:duckdb-nodejs-layer:1 |
-| ap-northeast-2 | arn:aws:lambda:ap-northeast-2:041475135427:layer:duckdb-nodejs-layer:1 |
-| ap-northeast-3 | arn:aws:lambda:ap-northeast-3:041475135427:layer:duckdb-nodejs-layer:1 |
-| ap-south-1 | arn:aws:lambda:ap-south-1:041475135427:layer:duckdb-nodejs-layer:1 |
-| ap-south-2 | arn:aws:lambda:ap-south-2:041475135427:layer:duckdb-nodejs-layer:1 |
-| ap-southeast-1 | arn:aws:lambda:ap-southeast-1:041475135427:layer:duckdb-nodejs-layer:1 |
-| ap-southeast-2 | arn:aws:lambda:ap-southeast-2:041475135427:layer:duckdb-nodejs-layer:1 |
-| ap-southeast-3 | arn:aws:lambda:ap-southeast-3:041475135427:layer:duckdb-nodejs-layer:1 |
-| ap-southeast-4 | arn:aws:lambda:ap-southeast-4:041475135427:layer:duckdb-nodejs-layer:1 |
-| ca-central-1 | arn:aws:lambda:ca-central-1:041475135427:layer:duckdb-nodejs-layer:1 |
-| cn-north-1 | arn:aws:lambda:cn-north-1:041475135427:layer:duckdb-nodejs-layer:1 |
-| cn-northwest-1 | arn:aws:lambda:cn-northwest-1:041475135427:layer:duckdb-nodejs-layer:1 |
-| eu-central-1 | arn:aws:lambda:eu-central-1:041475135427:layer:duckdb-nodejs-layer:1 |
-| eu-central-2 | arn:aws:lambda:eu-central-2:041475135427:layer:duckdb-nodejs-layer:1 |
-| eu-north-1 | arn:aws:lambda:eu-north-1:041475135427:layer:duckdb-nodejs-layer:1 |
-| eu-south-1 | arn:aws:lambda:eu-south-1:041475135427:layer:duckdb-nodejs-layer:1 |
-| eu-south-2 | arn:aws:lambda:eu-south-2:041475135427:layer:duckdb-nodejs-layer:1 |
-| eu-west-1 | arn:aws:lambda:eu-west-1:041475135427:layer:duckdb-nodejs-layer:1 |
-| eu-west-2 | arn:aws:lambda:eu-west-2:041475135427:layer:duckdb-nodejs-layer:1 |
-| eu-west-3 | arn:aws:lambda:eu-west-3:041475135427:layer:duckdb-nodejs-layer:1 |
-| me-central-1 | arn:aws:lambda:me-central-1:041475135427:layer:duckdb-nodejs-layer:1 |
-| me-south-1 | arn:aws:lambda:me-south-1:041475135427:layer:duckdb-nodejs-layer:1 |
-| sa-east-1 | arn:aws:lambda:sa-east-1:041475135427:layer:duckdb-nodejs-layer:1 |
-| us-east-1 | arn:aws:lambda:us-east-1:041475135427:layer:duckdb-nodejs-layer:1 |
-| us-east-2 | arn:aws:lambda:us-east-2:041475135427:layer:duckdb-nodejs-layer:1 |
-| us-gov-east-1 | arn:aws:lambda:us-gov-east-1:041475135427:layer:duckdb-nodejs-layer:1 |
-| us-gov-west-1 | arn:aws:lambda:us-gov-west-1:041475135427:layer:duckdb-nodejs-layer:1 |
-| us-west-1 | arn:aws:lambda:us-west-1:041475135427:layer:duckdb-nodejs-layer:1 |
+| af-south-1 | arn:aws:lambda:af-south-1:041475135427:layer:duckdb-nodejs-layer:3 |
+| ap-east-1 | arn:aws:lambda:ap-east-1:041475135427:layer:duckdb-nodejs-layer:3 |
+| ap-northeast-1 | arn:aws:lambda:ap-northeast-1:041475135427:layer:duckdb-nodejs-layer:3 |
+| ap-northeast-2 | arn:aws:lambda:ap-northeast-2:041475135427:layer:duckdb-nodejs-layer:3 |
+| ap-northeast-3 | arn:aws:lambda:ap-northeast-3:041475135427:layer:duckdb-nodejs-layer:3 |
+| ap-south-1 | arn:aws:lambda:ap-south-1:041475135427:layer:duckdb-nodejs-layer:3 |
+| ap-south-2 | arn:aws:lambda:ap-south-2:041475135427:layer:duckdb-nodejs-layer:3 |
+| ap-southeast-1 | arn:aws:lambda:ap-southeast-1:041475135427:layer:duckdb-nodejs-layer:3 |
+| ap-southeast-2 | arn:aws:lambda:ap-southeast-2:041475135427:layer:duckdb-nodejs-layer:3 |
+| ap-southeast-3 | arn:aws:lambda:ap-southeast-3:041475135427:layer:duckdb-nodejs-layer:3 |
+| ap-southeast-4 | arn:aws:lambda:ap-southeast-4:041475135427:layer:duckdb-nodejs-layer:3 |
+| ca-central-1 | arn:aws:lambda:ca-central-1:041475135427:layer:duckdb-nodejs-layer:3 |
+| cn-north-1 | arn:aws:lambda:cn-north-1:041475135427:layer:duckdb-nodejs-layer:3 |
+| cn-northwest-1 | arn:aws:lambda:cn-northwest-1:041475135427:layer:duckdb-nodejs-layer:3 |
+| eu-central-1 | arn:aws:lambda:eu-central-1:041475135427:layer:duckdb-nodejs-layer:3 |
+| eu-central-2 | arn:aws:lambda:eu-central-2:041475135427:layer:duckdb-nodejs-layer:3 |
+| eu-north-1 | arn:aws:lambda:eu-north-1:041475135427:layer:duckdb-nodejs-layer:3 |
+| eu-south-1 | arn:aws:lambda:eu-south-1:041475135427:layer:duckdb-nodejs-layer:3 |
+| eu-south-2 | arn:aws:lambda:eu-south-2:041475135427:layer:duckdb-nodejs-layer:3 |
+| eu-west-1 | arn:aws:lambda:eu-west-1:041475135427:layer:duckdb-nodejs-layer:3 |
+| eu-west-2 | arn:aws:lambda:eu-west-2:041475135427:layer:duckdb-nodejs-layer:3 |
+| eu-west-3 | arn:aws:lambda:eu-west-3:041475135427:layer:duckdb-nodejs-layer:3 |
+| me-central-1 | arn:aws:lambda:me-central-1:041475135427:layer:duckdb-nodejs-layer:3 |
+| me-south-1 | arn:aws:lambda:me-south-1:041475135427:layer:duckdb-nodejs-layer:3 |
+| sa-east-1 | arn:aws:lambda:sa-east-1:041475135427:layer:duckdb-nodejs-layer:3 |
+| us-east-1 | arn:aws:lambda:us-east-1:041475135427:layer:duckdb-nodejs-layer:3 |
+| us-east-2 | arn:aws:lambda:us-east-2:041475135427:layer:duckdb-nodejs-layer:3 |
+| us-gov-east-1 | arn:aws:lambda:us-gov-east-1:041475135427:layer:duckdb-nodejs-layer:3 |
+| us-gov-west-1 | arn:aws:lambda:us-gov-west-1:041475135427:layer:duckdb-nodejs-layer:3 |
+| us-west-1 | arn:aws:lambda:us-west-1:041475135427:layer:duckdb-nodejs-layer:3 |
 
 ## Example usage
 Hava a look at the example repository which uses this AWS Lambda layer:
