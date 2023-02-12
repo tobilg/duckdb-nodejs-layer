@@ -17,13 +17,6 @@ jobs:
       - name: Install AWS CLI
         uses: unfor19/install-aws-cli-action@v1
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-
       - name: Build layer
         run: |
           # Cleanup
@@ -39,4 +32,7 @@ jobs:
           docker run -v $PWD/release:/opt/mount --rm --entrypoint /bin/bash duckdb-lambda -c "cp /tmp/release/duckdb-layer.zip /opt/mount/"          
 
       - name: Publish layer
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: bash $PWD/publish_layer.sh
