@@ -22,7 +22,7 @@ The layer gets automatically published to all currently available (in the moment
 
 The ARNs follow the following logic:
 ```text
-arn:aws:lambda:$REGION:041475135427:layer:duckdb-nodejs-layer:$VERSION
+arn:aws:lambda:$REGION:041475135427:layer:duckdb-nodejs-x86:$VERSION
 ```
 
 The **ARNs** of the latest version of the DuckDB Node.js Lambda layer are:
