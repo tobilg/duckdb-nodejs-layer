@@ -8,6 +8,7 @@ The following DuckDB extensions are enabled and contained in the static build:
 * `httpfs`: Adds support for reading and writing files over a HTTP(S) connection
 * `json`: Adds support for JSON operations
 * `fts`: Adds support for Full-Text Search Indexes
+* `icu`: Adds support for time zones and collations using the ICU library
 
 ## Usage
 You can use the published layer in your own serverless applications by referencing it as outlined in the different framework's docs:

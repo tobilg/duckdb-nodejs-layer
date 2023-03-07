@@ -4,7 +4,7 @@ import json
 import pickle
 
 # list of extensions to bundle
-extensions = ['parquet', 'icu', 'json', 'httpfs']
+extensions = ['parquet', 'icu', 'json', 'httpfs', 'fts']
 
 # path to target
 basedir = os.getcwd()
