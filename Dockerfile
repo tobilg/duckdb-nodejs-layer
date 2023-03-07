@@ -15,7 +15,7 @@ RUN mkdir -p /tmp/from-git && cd /tmp/from-git && git clone https://github.com/d
 COPY src/Makefile /tmp/from-git/duckdb/tools/nodejs/Makefile
 
 # Copy custom configure.py (add httpfs extension)
-#COPY src/configure.py /tmp/from-git/duckdb/tools/nodejs/configure.py
+COPY src/configure.py /tmp/from-git/duckdb/tools/nodejs/configure.py
 
 # Configure
 RUN cd /tmp/from-git/duckdb/tools/nodejs && ./configure && GEN=ninja EXTENSION_STATIC_BUILD=1 BUILD_TPCH=1 BUILD_HTTPFS=1 STATIC_OPENSSL=1 BUILD_NODE=1 make
