@@ -5,8 +5,52 @@ on:
     branches: [ main ]
 
 jobs:
+
+  build_geo_extension:
+    name: Build and store geo extension
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Build geo extension
+        run: |
+          # Create release folder
+          mkdir -p $PWD/release
+
+          # Run build
+          docker build -t duckdb-geo-extension -f Dockerfile.geo .
+
+          # Copy release from image
+          docker run -v $PWD/release:/opt/mount --rm --entrypoint /bin/bash duckdb-geo-extension -c "cp /tmp/release/geo.duckdb_extension /opt/mount/"
+
+      - name: Upload geo extension artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: geo-extension
+          path: $PWD/release/geo.duckdb_extension
   
-  deploy:
+  build_prql_extension:
+    name: Build and store prql extension
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Build prql extension
+        run: |
+          # Create release folder
+          mkdir -p $PWD/release
+
+          # Run build
+          docker build -t duckdb-prql-extension -f Dockerfile.prql .
+
+          # Copy release from image
+          docker run -v $PWD/release:/opt/mount --rm --entrypoint /bin/bash duckdb-prql-extension -c "cp /tmp/release/prql.duckdb_extension /opt/mount/"
+
+      - name: Upload prql extension artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: prql-extension
+          path: $PWD/release/prql.duckdb_extension
+  
+  build_layer:
     name: Build and upload DuckDB Lambda layer
     runs-on: ubuntu-latest
 
@@ -19,9 +63,6 @@ jobs:
 
       - name: Build layer
         run: |
-          # Cleanup
-          rm -rf $PWD/release
-
           # Create release folder
           mkdir -p $PWD/release
 

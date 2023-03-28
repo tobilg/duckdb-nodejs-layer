@@ -14,5 +14,7 @@ RUN mkdir -p /tmp/from-git && cd /tmp/from-git && git clone https://github.com/h
 # Configure
 RUN cd /tmp/from-git/geo && make
 
+RUN strip --strip-unneeded /tmp/from-git/geo/build/release/extension/geo/geo.duckdb_extension
+
 # Create zip file with layer contents
 RUN mkdir -p /tmp/release && cp /tmp/from-git/geo/build/release/extension/geo/geo.duckdb_extension /tmp/release/geo.duckdb_extension
