@@ -1,4 +1,4 @@
-name: Build DuckDB Lambda Layer
+name: Build DuckDB Lambda Layers
 
 on:
   push:
@@ -50,16 +50,13 @@ jobs:
           name: prql-extension
           path: $PWD/release/prql.duckdb_extension
   
-  build_layer:
-    name: Build and upload DuckDB Lambda layer
+  build_duckdb_node:
+    name: Build and upload DuckDB Node Lambda layer
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
-      - name: Install AWS CLI
-        uses: unfor19/install-aws-cli-action@v1
 
       - name: Build layer
         run: |
@@ -72,9 +69,78 @@ jobs:
           # Copy release from image
           docker run -v $PWD/release:/opt/mount --rm --entrypoint /bin/bash duckdb-lambda -c "cp /tmp/release/duckdb-layer.zip /opt/mount/"          
 
-      - name: Publish layer
+      - name: Upload DuckDB Node build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: duckdb-node-zip
+          path: $PWD/release/duckdb-layer.zip
+
+  publish_layer_without_extensions:
+    name: Publish layer without extensions
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: duckdb-node-zip
+          path: $PWD/duckdb-layer.zip
+
+      - name: Install AWS CLI
+        uses: unfor19/install-aws-cli-action@v1
+
+      # - name: Publish layer
+      #   env:
+      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     AWS_EC2_METADATA_DISABLED: 'true'
+      #   run: bash $PWD/publish_layer.sh duckdb-nodejs-x86
+
+  publish_layer_with_extensions:
+    name: Publish layer with extensions
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: duckdb-node-zip
+          path: $PWD/duckdb-layer.zip
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: geo-extension
+          path: $PWD/geo.duckdb_extension
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: prql-extension
+          path: $PWD/prql.duckdb_extension
+
+      - name: Repackage & build layer
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_EC2_METADATA_DISABLED: 'true'
-        run: bash $PWD/publish_layer.sh
+          EXTENSION_DIR: $PWD/layer/nodejs/node_modules/duckdb/extensions
+        run: |
+          # Create layer folder
+          mkdir -p $PWD/layer
+
+          # Unzip to layer folder
+          unzip $PWD/duckdb-layer.zip -d layer
+
+          # Create extension directory
+          mkdir -p $EXTENSION_DIR
+
+          # Add extensions
+          mv $PWD/geo.duckdb_extension $EXTENSION_DIR
+          mv $PWD/prql.duckdb_extension $EXTENSION_DIR
+
+          # Zip layer
+          cd $PWD/layer && zip -q -r $PWD/duckdb-layer.zip .
+
+      - name: Install AWS CLI
+        uses: unfor19/install-aws-cli-action@v1
+
+      # - name: Publish layer
+      #   env:
+      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     AWS_EC2_METADATA_DISABLED: 'true'
+      #   run: bash $PWD/publish_layer.sh duckdb-nodejs-extensions-x86
