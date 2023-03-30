@@ -132,6 +132,9 @@ jobs:
           # Unzip to layer folder
           unzip -d layer/ $PWD/duckdb-layer.zip
 
+          # Delete original archive
+          rm $PWD/duckdb-layer.zip
+
           # Create extension directory
           mkdir -p $EXTENSION_DIR
 
