@@ -65,6 +65,7 @@ The **ARNs** of the latest version of the DuckDB Node.js Lambda layer are:
 | us-east-1 | arn:aws:lambda:us-east-1:041475135427:layer:duckdb-nodejs-x86:2 |
 | us-east-2 | arn:aws:lambda:us-east-2:041475135427:layer:duckdb-nodejs-x86:2 |
 | us-west-1 | arn:aws:lambda:us-west-1:041475135427:layer:duckdb-nodejs-x86:2 |
+| us-west-2 | arn:aws:lambda:us-west-2:041475135427:layer:duckdb-nodejs-x86:2 |
 
 ## Community extensions DuckDB layer
 The ARNs follow the following logic:
@@ -125,3 +126,4 @@ The **ARNs** of the latest version of the DuckDB Node.js Lambda layer with commu
 | us-east-1 | arn:aws:lambda:us-east-1:041475135427:layer:duckdb-nodejs-extensions-x86:1 |
 | us-east-2 | arn:aws:lambda:us-east-2:041475135427:layer:duckdb-nodejs-extensions-x86:1 |
 | us-west-1 | arn:aws:lambda:us-west-1:041475135427:layer:duckdb-nodejs-extensions-x86:1 |
+| us-west-2 | arn:aws:lambda:us-west-2:041475135427:layer:duckdb-nodejs-extensions-x86:1 |
