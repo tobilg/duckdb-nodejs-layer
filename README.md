@@ -86,8 +86,8 @@ The following DuckDB extensions are enabled and contained in the static build:
 The following DuckDB community extensions are contained in the layer, and can be loaded via
 
 ```sql
-INSTALL './extensions/${NAME}.duckdb_extension';
-LOAD    './extensions/${NAME}.duckdb_extension';
+INSTALL '/opt/nodejs/node_modules/duckdb/extensions/${NAME}.duckdb_extension';
+LOAD    '/opt/nodejs/node_modules/duckdb/extensions/${NAME}.duckdb_extension';
 ```
 
 * `prql`: Adds support for [prql](https://prql-lang.org/) via [ywelsch/duckdb-prql](https://github.com/ywelsch/duckdb-prql)
