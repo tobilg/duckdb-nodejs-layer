@@ -29,7 +29,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: geo-extension
-          path: $PWD/release/geo.duckdb_extension
+          path: release/geo.duckdb_extension
   
   build_prql_extension:
     name: Build and store prql extension
@@ -54,7 +54,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: prql-extension
-          path: $PWD/release/prql.duckdb_extension
+          path: release/prql.duckdb_extension
   
   build_duckdb_node:
     name: Build and upload DuckDB Node Lambda layer
@@ -79,7 +79,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: duckdb-node-zip
-          path: $PWD/release/duckdb-layer.zip
+          path: release/duckdb-layer.zip
 
   publish_layer_without_extensions:
     name: Publish layer without extensions
@@ -90,7 +90,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: duckdb-node-zip
-          path: $PWD/duckdb-layer.zip
+          path: duckdb-layer.zip
 
       - name: Install AWS CLI
         uses: unfor19/install-aws-cli-action@v1
@@ -111,17 +111,17 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: duckdb-node-zip
-          path: $PWD/duckdb-layer.zip
+          path: duckdb-layer.zip
 
       - uses: actions/download-artifact@v3
         with:
           name: geo-extension
-          path: $PWD/geo.duckdb_extension
+          path: geo.duckdb_extension
 
       - uses: actions/download-artifact@v3
         with:
           name: prql-extension
-          path: $PWD/prql.duckdb_extension
+          path: prql.duckdb_extension
 
       - name: Repackage & build layer
         env:
