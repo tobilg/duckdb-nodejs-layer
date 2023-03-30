@@ -95,12 +95,12 @@ jobs:
       - name: Install AWS CLI
         uses: unfor19/install-aws-cli-action@v1
 
-      # - name: Publish layer
-      #   env:
-      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #     AWS_EC2_METADATA_DISABLED: 'true'
-      #   run: bash $PWD/publish_layer.sh duckdb-nodejs-x86
+      - name: Publish layer
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_EC2_METADATA_DISABLED: 'true'
+        run: bash $PWD/publish_layer.sh duckdb-nodejs-x86
 
   publish_layer_with_extensions:
     name: Publish layer with extensions
@@ -145,9 +145,9 @@ jobs:
       - name: Install AWS CLI
         uses: unfor19/install-aws-cli-action@v1
 
-      # - name: Publish layer
-      #   env:
-      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #     AWS_EC2_METADATA_DISABLED: 'true'
-      #   run: bash $PWD/publish_layer.sh duckdb-nodejs-extensions-x86
+      - name: Publish layer
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_EC2_METADATA_DISABLED: 'true'
+        run: bash $PWD/publish_layer.sh duckdb-nodejs-extensions-x86
