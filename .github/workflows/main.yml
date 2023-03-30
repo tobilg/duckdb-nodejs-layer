@@ -111,17 +111,14 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: duckdb-node-zip
-          path: duckdb-layer.zip
 
       - uses: actions/download-artifact@v3
         with:
           name: geo-extension
-          path: geo.duckdb_extension
 
       - uses: actions/download-artifact@v3
         with:
           name: prql-extension
-          path: prql.duckdb_extension
 
       - name: Repackage & build layer
         env:
