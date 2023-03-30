@@ -87,6 +87,9 @@ jobs:
     needs: [build_duckdb_node]
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
       - uses: actions/download-artifact@v3
         with:
           name: duckdb-node-zip
@@ -108,6 +111,9 @@ jobs:
     needs: [build_geo_extension, build_prql_extension, build_duckdb_node]
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
       - uses: actions/download-artifact@v3
         with:
           name: duckdb-node-zip
