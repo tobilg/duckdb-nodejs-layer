@@ -130,8 +130,10 @@ jobs:
           # Create layer folder
           mkdir -p $PWD/layer
 
+          ls -la
+
           # Unzip to layer folder
-          unzip $PWD/duckdb-layer.zip -d layer
+          unzip -d layer/ $PWD/duckdb-layer.zip
 
           # Create extension directory
           mkdir -p $EXTENSION_DIR
