@@ -93,7 +93,6 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: duckdb-node-zip
-          path: duckdb-layer.zip
 
       - name: Install AWS CLI
         uses: unfor19/install-aws-cli-action@v1
@@ -127,9 +126,10 @@ jobs:
           name: prql-extension
 
       - name: Repackage & build layer
-        env:
-          EXTENSION_DIR: $PWD/layer/nodejs/node_modules/duckdb/extensions
         run: |
+          # Export extension dir
+          export EXTENSION_DIR="$PWD/layer/nodejs/node_modules/duckdb/extensions"
+
           # Create layer folder
           mkdir -p $PWD/layer
 
@@ -148,8 +148,11 @@ jobs:
           mv $PWD/geo.duckdb_extension $EXTENSION_DIR
           mv $PWD/prql.duckdb_extension $EXTENSION_DIR
 
+          # Show directory structure
+          tree $PWD/layer
+
           # Zip layer
-          cd $PWD/layer && zip -q -r $PWD/duckdb-layer.zip .
+          cd $PWD/layer && zip -q -r ../duckdb-layer.zip . && cd ..
 
       - name: Install AWS CLI
         uses: unfor19/install-aws-cli-action@v1
