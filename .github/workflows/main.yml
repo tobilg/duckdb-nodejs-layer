@@ -55,6 +55,31 @@ jobs:
         with:
           name: prql-extension
           path: release/prql.duckdb_extension
+
+  build_scrooge_extension:
+    name: Build and store scrooge extension
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Build scrooge extension
+        run: |
+          # Create release folder
+          mkdir -p $PWD/release
+
+          # Run build
+          docker build -t duckdb-scrooge-extension -f Dockerfile.scrooge .
+
+          # Copy release from image
+          docker run -v $PWD/release:/opt/mount --rm --entrypoint /bin/bash duckdb-scrooge-extension -c "cp /tmp/release/prql.duckdb_extension /opt/mount/"
+
+      - name: Upload scrooge extension artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: scrooge-extension
+          path: release/scrooge.duckdb_extension
   
   build_duckdb_node:
     name: Build and upload DuckDB Node Lambda layer
@@ -105,7 +130,7 @@ jobs:
   publish_layer_with_extensions:
     name: Publish layer with extensions
     runs-on: ubuntu-latest
-    needs: [build_geo_extension, build_prql_extension, build_duckdb_node]
+    needs: [build_geo_extension, build_prql_extension, build_scrooge_extension, build_duckdb_node]
 
     steps:
       - uses: actions/download-artifact@v3
@@ -119,6 +144,10 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: prql-extension
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: scrooge-extension
 
       - name: Repackage & build layer
         env:
@@ -138,6 +167,7 @@ jobs:
           # Add extensions
           mv $PWD/geo.duckdb_extension $EXTENSION_DIR
           mv $PWD/prql.duckdb_extension $EXTENSION_DIR
+          mv $PWD/scrooge.duckdb_extension $EXTENSION_DIR
 
           # Zip layer
           cd $PWD/layer && zip -q -r $PWD/duckdb-layer.zip .
@@ -145,9 +175,9 @@ jobs:
       - name: Install AWS CLI
         uses: unfor19/install-aws-cli-action@v1
 
-      # - name: Publish layer
-      #   env:
-      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #     AWS_EC2_METADATA_DISABLED: 'true'
-      #   run: bash $PWD/publish_layer.sh duckdb-nodejs-extensions-x86
+      - name: Publish layer
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_EC2_METADATA_DISABLED: 'true'
+        run: bash $PWD/publish_layer.sh duckdb-nodejs-extensions-test-x86
