@@ -112,10 +112,12 @@ jobs:
     needs: [build_duckdb_node]
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
       - uses: actions/download-artifact@v3
         with:
           name: duckdb-node-zip
-          path: duckdb-layer.zip
 
       - name: Install AWS CLI
         uses: unfor19/install-aws-cli-action@v1
@@ -133,6 +135,9 @@ jobs:
     needs: [build_geo_extension, build_prql_extension, build_scrooge_extension, build_duckdb_node]
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
       - uses: actions/download-artifact@v3
         with:
           name: duckdb-node-zip
@@ -150,9 +155,10 @@ jobs:
           name: scrooge-extension
 
       - name: Repackage & build layer
-        env:
-          EXTENSION_DIR: $PWD/layer/nodejs/node_modules/duckdb/extensions
         run: |
+          # Export extension dir
+          export EXTENSION_DIR="$PWD/layer/nodejs/node_modules/duckdb/extensions"
+
           # Create layer folder
           mkdir -p $PWD/layer
 
@@ -160,6 +166,9 @@ jobs:
 
           # Unzip to layer folder
           unzip -d layer/ $PWD/duckdb-layer.zip
+
+          # Delete original archive
+          rm $PWD/duckdb-layer.zip
 
           # Create extension directory
           mkdir -p $EXTENSION_DIR
@@ -169,8 +178,11 @@ jobs:
           mv $PWD/prql.duckdb_extension $EXTENSION_DIR
           mv $PWD/scrooge.duckdb_extension $EXTENSION_DIR
 
+          # Show directory structure
+          tree $PWD/layer
+
           # Zip layer
-          cd $PWD/layer && zip -q -r $PWD/duckdb-layer.zip .
+          cd $PWD/layer && zip -q -r ../duckdb-layer.zip . && cd ..
 
       - name: Install AWS CLI
         uses: unfor19/install-aws-cli-action@v1
