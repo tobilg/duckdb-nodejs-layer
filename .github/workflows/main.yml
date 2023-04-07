@@ -73,7 +73,7 @@ jobs:
           docker build -t duckdb-scrooge-extension -f Dockerfile.scrooge .
 
           # Copy release from image
-          docker run -v $PWD/release:/opt/mount --rm --entrypoint /bin/bash duckdb-scrooge-extension -c "cp /tmp/release/prql.duckdb_extension /opt/mount/"
+          docker run -v $PWD/release:/opt/mount --rm --entrypoint /bin/bash duckdb-scrooge-extension -c "cp /tmp/release/scrooge.duckdb_extension /opt/mount/"
 
       - name: Upload scrooge extension artifact
         uses: actions/upload-artifact@v3
