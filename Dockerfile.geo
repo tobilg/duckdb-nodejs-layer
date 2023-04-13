@@ -1,6 +1,6 @@
 FROM amazon/aws-lambda-nodejs:16 as builder
 
-ARG DUCKDB_VERSION=main
+ARG DUCKDB_VERSION=v0.7.1
 
 # Install dependencies
 RUN yum update -y && \
