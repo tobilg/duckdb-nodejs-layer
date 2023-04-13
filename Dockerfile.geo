@@ -1,7 +1,5 @@
 FROM amazon/aws-lambda-nodejs:16 as builder
 
-ARG DUCKDB_TAG=v0.7.1
-
 # Install dependencies
 RUN yum update -y && \
   yum install git zip ninja-build make gcc-c++ openssl11-devel cmake3 -y && \
@@ -9,7 +7,7 @@ RUN yum update -y && \
   ln -s /usr/bin/cmake3 /usr/bin/cmake
 
 # Get DuckDB sources
-RUN mkdir -p /tmp/from-git && cd /tmp/from-git && git clone https://github.com/handstuyennn/geo.git --branch $BRANCH --recurse-submodules && cd geo
+RUN mkdir -p /tmp/from-git && cd /tmp/from-git && git clone https://github.com/handstuyennn/geo.git --branch main --recurse-submodules && cd geo
 
 # Configure
 RUN cd /tmp/from-git/geo && make
