@@ -1,6 +1,6 @@
 FROM amazon/aws-lambda-nodejs:16 as builder
 
-ARG DUCKDB_VERSION=v0.7.1
+ARG DUCKDB_TAG=v0.7.1
 
 # Install dependencies
 RUN yum update -y && \
@@ -9,7 +9,7 @@ RUN yum update -y && \
   ln -s /usr/bin/cmake3 /usr/bin/cmake
 
 # Get DuckDB sources
-RUN mkdir -p /tmp/from-git && cd /tmp/from-git && git clone https://github.com/handstuyennn/geo.git --branch $DUCKDB_VERSION && cd geo && git fetch --all --tags
+RUN mkdir -p /tmp/from-git && cd /tmp/from-git && git fetch --all --tags && git clone -b ${DUCKDB_TAG} --single-branch --depth 1 https://github.com/handstuyennn/geo.git && cd geo
 
 # Configure
 RUN cd /tmp/from-git/geo && make
