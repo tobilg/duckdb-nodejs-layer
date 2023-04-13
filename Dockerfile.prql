@@ -15,7 +15,7 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
 RUN mkdir -p /tmp/from-git && cd /tmp/from-git && git clone https://github.com/ywelsch/duckdb-prql.git --branch $BRANCH --recurse-submodules && cd duckdb-prql && git fetch --all --tags
 
 # Configure
-RUN cd /tmp/from-git/duckdb-prql && CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) make
+RUN cd /tmp/from-git/duckdb-prql && CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) STATIC_LIBCPP=1 EXTENSION_STATIC_BUILD=1 make
 
 #RUN strip /tmp/from-git/duckdb-prql/build/release/extension/prql/prql.duckdb_extension
 
