@@ -9,7 +9,7 @@ RUN yum update -y && \
   ln -s /usr/bin/cmake3 /usr/bin/cmake
 
 # Get DuckDB sources
-RUN mkdir -p /tmp/from-git && cd /tmp/from-git && git clone https://github.com/handstuyennn/geo.git && cd geo && git checkout tags/${DUCKDB_TAG}
+RUN mkdir -p /tmp/from-git && cd /tmp/from-git && git clone https://github.com/handstuyennn/geo.git --branch $BRANCH --recurse-submodules && cd geo
 
 # Configure
 RUN cd /tmp/from-git/geo && make
