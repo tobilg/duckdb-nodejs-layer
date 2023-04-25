@@ -1,0 +1,23 @@
+FROM amazon/aws-lambda-nodejs:16 as builder
+
+ARG BRANCH=main
+
+# Install dependencies
+RUN yum update -y && \
+  yum install git zip ninja-build make gcc-c++ openssl-static python-pip sqlite sqlite-devel glibc-devel \
+              libstdc++-devel wget java-1.8.0-openjdk zip maven unixODBC-devel glibc-devel readline-devel \
+              libcurl-devel expat-devel gettext unzip libffi-devel curl zlib-devel openssh \
+              cpp.x86_64 sqlite-devel.x86_64 libtiff.x86_64 -y && \
+  yum remove cmake -y && \
+  pip install cmake --upgrade
+
+# Get DuckDB sources
+RUN mkdir -p /tmp/from-git && cd /tmp/from-git && git clone https://github.com/duckdblabs/duckdb_spatial --branch $BRANCH --recurse-submodules --depth 1
+
+# Configure
+RUN cd /tmp/from-git/duckdb_spatial && SQLITE3_LIBS="-L/usr/local/lib -lsqlite3" CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) make
+
+RUN strip --strip-unneeded /tmp/from-git/geo/build/release/extension/duckdb_spatial/spatial.duckdb_extension
+
+# Create zip file with layer contents
+RUN mkdir -p /tmp/release && cp /tmp/from-git/duckdb_spatial/build/release/extension/duckdb_spatial/spatial.duckdb_extension /tmp/release/spatial.duckdb_extension
