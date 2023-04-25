@@ -12,7 +12,7 @@ RUN yum update -y && \
 RUN mkdir -p /tmp/from-git && cd /tmp/from-git && git clone https://github.com/pdet/Scrooge-McDuck.git --branch $BRANCH --depth 1  --recurse-submodules && cd Scrooge-McDuck && git fetch --all --tags
 
 # Configure
-RUN cd /tmp/from-git/Scrooge-McDuck && CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) make
+RUN cd /tmp/from-git/Scrooge-McDuck && CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) STATIC_LIBCPP=1 EXTENSION_STATIC_BUILD=1 make
 
 RUN strip --strip-unneeded /tmp/from-git/Scrooge-McDuck/build/release/extension/scrooge/scrooge.duckdb_extension
 
