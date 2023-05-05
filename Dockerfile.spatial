@@ -21,7 +21,17 @@ RUN cd /tmp/from-git/duckdb_spatial/spatial/dependencies/third_party/sqlite3 && 
   cmake -DCMAKE_INSTALL_PREFIX=/usr/ .. \
   && make install
 
-RUN cd /tmp/from-git/duckdb_spatial && CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) make
+RUN wget https://github.com/openssl/openssl/archive/refs/tags/OpenSSL_1_1_1s.tar.gz && \
+    yum install tar -y && \
+    tar -xzvf OpenSSL_1_1_1s.tar.gz && \
+    mv openssl-OpenSSL_1_1_1s openssl-1.1.1s && \
+    cd openssl-1.1.1s && \
+    find ./ -type f -exec sed -i -e 's/\#\ define\ OPENSSL\_VERSION\_NUMBER/\#define\ OPENSSL\_VERSION\_NUMBER/g' {} \; && \
+    ./config --libdir=lib no-shared zlib-dynamic && \
+    make && \
+    make install
+
+RUN cd /tmp/from-git/duckdb_spatial && OPENSSL_ROOT_DIR=`pwd`/build/openssl/build CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) make
 
 RUN strip --strip-unneeded /tmp/from-git/geo/build/release/extension/duckdb_spatial/spatial.duckdb_extension
 
