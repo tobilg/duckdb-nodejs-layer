@@ -4,7 +4,7 @@ ARG BRANCH=main
 
 # Install dependencies
 RUN yum update -y && \
-  yum install git zip ninja-build make gcc-c++ openssl-static python-pip sqlite sqlite-devel glibc-devel \
+  yum install git zip ninja-build make gcc-c++ openssl-static python-pip glibc-devel \
               libstdc++-devel wget java-1.8.0-openjdk zip maven unixODBC-devel glibc-devel readline-devel \
               libcurl-devel expat-devel gettext unzip libffi-devel curl zlib-devel openssh \
               cpp.x86_64 sqlite-devel.x86_64 libtiff.x86_64 -y && \
@@ -14,8 +14,14 @@ RUN yum update -y && \
 # Get DuckDB sources
 RUN mkdir -p /tmp/from-git && cd /tmp/from-git && git clone https://github.com/duckdblabs/duckdb_spatial --branch $BRANCH --recurse-submodules --depth 1
 
-# Configure
-RUN cd /tmp/from-git/duckdb_spatial && SQLITE3_LIBS="-L/usr/local/lib -lsqlite3" CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) make
+# Build bundled sqlite3 and install it to /usr (overwrite the ancient system sqlite3 3.7)
+RUN cd /tmp/from-git/duckdb_spatial/spatial/dependencies/third_party/sqlite3 && \
+  mkdir build && \
+  cd build && \
+  cmake -DCMAKE_INSTALL_PREFIX=/usr/ .. \
+  && make install
+
+RUN cd /tmp/from-git/duckdb_spatial && CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) make
 
 RUN strip --strip-unneeded /tmp/from-git/geo/build/release/extension/duckdb_spatial/spatial.duckdb_extension
 
