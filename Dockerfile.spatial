@@ -30,7 +30,9 @@ RUN wget https://github.com/openssl/openssl/archive/refs/tags/OpenSSL_1_1_1s.tar
   make && \
   make install
 
-RUN cd /tmp/from-git/duckdb_spatial && OPENSSL_ROOT_DIR=/usr/local/ssl CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) make
+RUN cd /tmp/from-git/duckdb_spatial && \
+  export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH" && \
+  STATIC_OPENSSL=1 STATIC_LIBCPP=1 OPENSSL_ROOT_DIR=/usr/local/ssl CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) make release
 
 RUN strip --strip-unneeded /tmp/from-git/geo/build/release/extension/duckdb_spatial/spatial.duckdb_extension
 
