@@ -6,83 +6,83 @@ on:
 
 jobs:
 
-  build_geo_extension:
-    name: Build and store geo extension
-    runs-on: ubuntu-latest
+  # build_geo_extension:
+  #   name: Build and store geo extension
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
 
-      - name: Build geo extension
-        run: |
-          # Create release folder
-          mkdir -p $PWD/release
+  #     - name: Build geo extension
+  #       run: |
+  #         # Create release folder
+  #         mkdir -p $PWD/release
 
-          # Run build
-          docker build -t duckdb-geo-extension -f Dockerfile.geo .
+  #         # Run build
+  #         docker build -t duckdb-geo-extension -f Dockerfile.geo .
 
-          # Copy release from image
-          docker run -v $PWD/release:/opt/mount --rm --entrypoint /bin/bash duckdb-geo-extension -c "cp /tmp/release/geo.duckdb_extension /opt/mount/"
+  #         # Copy release from image
+  #         docker run -v $PWD/release:/opt/mount --rm --entrypoint /bin/bash duckdb-geo-extension -c "cp /tmp/release/geo.duckdb_extension /opt/mount/"
 
-      - name: Upload geo extension artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: geo-extension
-          path: release/geo.duckdb_extension
+  #     - name: Upload geo extension artifact
+  #       uses: actions/upload-artifact@v3
+  #       with:
+  #         name: geo-extension
+  #         path: release/geo.duckdb_extension
   
-  build_prql_extension:
-    name: Build and store prql extension
-    runs-on: ubuntu-latest
+  # build_prql_extension:
+  #   name: Build and store prql extension
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
 
-      - name: Build prql extension
-        run: |
-          # Create release folder
-          mkdir -p $PWD/release
+  #     - name: Build prql extension
+  #       run: |
+  #         # Create release folder
+  #         mkdir -p $PWD/release
 
-          # Run build
-          docker build -t duckdb-prql-extension -f Dockerfile.prql .
+  #         # Run build
+  #         docker build -t duckdb-prql-extension -f Dockerfile.prql .
 
-          # Copy release from image
-          docker run -v $PWD/release:/opt/mount --rm --entrypoint /bin/bash duckdb-prql-extension -c "cp /tmp/release/prql.duckdb_extension /opt/mount/"
+  #         # Copy release from image
+  #         docker run -v $PWD/release:/opt/mount --rm --entrypoint /bin/bash duckdb-prql-extension -c "cp /tmp/release/prql.duckdb_extension /opt/mount/"
 
-      - name: Upload prql extension artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: prql-extension
-          path: release/prql.duckdb_extension
+  #     - name: Upload prql extension artifact
+  #       uses: actions/upload-artifact@v3
+  #       with:
+  #         name: prql-extension
+  #         path: release/prql.duckdb_extension
 
-  build_scrooge_extension:
-    name: Build and store scrooge extension
-    runs-on: ubuntu-latest
+  # build_scrooge_extension:
+  #   name: Build and store scrooge extension
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
 
-      - name: Build scrooge extension
-        run: |
-          # Create release folder
-          mkdir -p $PWD/release
+  #     - name: Build scrooge extension
+  #       run: |
+  #         # Create release folder
+  #         mkdir -p $PWD/release
 
-          # Run build
-          docker build -t duckdb-scrooge-extension -f Dockerfile.scrooge .
+  #         # Run build
+  #         docker build -t duckdb-scrooge-extension -f Dockerfile.scrooge .
 
-          # Copy release from image
-          docker run -v $PWD/release:/opt/mount --rm --entrypoint /bin/bash duckdb-scrooge-extension -c "cp /tmp/release/scrooge.duckdb_extension /opt/mount/"
+  #         # Copy release from image
+  #         docker run -v $PWD/release:/opt/mount --rm --entrypoint /bin/bash duckdb-scrooge-extension -c "cp /tmp/release/scrooge.duckdb_extension /opt/mount/"
 
-      - name: Upload scrooge extension artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: scrooge-extension
-          path: release/scrooge.duckdb_extension
+  #     - name: Upload scrooge extension artifact
+  #       uses: actions/upload-artifact@v3
+  #       with:
+  #         name: scrooge-extension
+  #         path: release/scrooge.duckdb_extension
   
-  build_duckdb_node:
-    name: Build and upload DuckDB Node Lambda layer
+  build_duckdb_node_x86:
+    name: Build and upload DuckDB Node Lambda layer for x86
     runs-on: ubuntu-latest
 
     steps:
@@ -111,7 +111,7 @@ jobs:
   publish_npm_package:
     name: Publish duckdb-lambda npm publish_npm_package
     runs-on: ubuntu-latest
-    needs: [build_duckdb_node]
+    needs: [build_duckdb_node_x86]
 
     steps:
       - uses: actions/setup-node@v3
@@ -150,10 +150,10 @@ jobs:
             npm publish
           fi
 
-  publish_layer_without_extensions:
+  publish_layer_without_extensions_x86:
     name: Publish layer without extensions
     runs-on: ubuntu-latest
-    needs: [build_duckdb_node]
+    needs: [build_duckdb_node_x86]
 
     steps:
       - name: Checkout
@@ -162,71 +162,6 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: duckdb-node-zip
-
-      - name: Install AWS CLI
-        uses: unfor19/install-aws-cli-action@v1
-
-      # - name: Publish layer
-      #   env:
-      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #     AWS_EC2_METADATA_DISABLED: 'true'
-      #   run: bash $PWD/publish_layer.sh duckdb-nodejs-x86
-
-  publish_layer_with_extensions:
-    name: Publish layer with extensions
-    runs-on: ubuntu-latest
-    needs: [build_geo_extension, build_prql_extension, build_scrooge_extension, build_duckdb_node]
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - uses: actions/download-artifact@v3
-        with:
-          name: duckdb-node-zip
-
-      - uses: actions/download-artifact@v3
-        with:
-          name: geo-extension
-
-      - uses: actions/download-artifact@v3
-        with:
-          name: prql-extension
-
-      - uses: actions/download-artifact@v3
-        with:
-          name: scrooge-extension
-
-      - name: Repackage & build layer
-        run: |
-          # Export extension dir
-          export EXTENSION_DIR="$PWD/layer/nodejs/node_modules/duckdb/extensions"
-
-          # Create layer folder
-          mkdir -p $PWD/layer
-
-          ls -la
-
-          # Unzip to layer folder
-          unzip -d layer/ $PWD/duckdb-layer.zip
-
-          # Delete original archive
-          rm $PWD/duckdb-layer.zip
-
-          # Create extension directory
-          mkdir -p $EXTENSION_DIR
-
-          # Add extensions
-          mv $PWD/geo.duckdb_extension $EXTENSION_DIR
-          mv $PWD/prql.duckdb_extension $EXTENSION_DIR
-          mv $PWD/scrooge.duckdb_extension $EXTENSION_DIR
-
-          # Show directory structure
-          tree $PWD/layer
-
-          # Zip layer
-          cd $PWD/layer && zip -q -r ../duckdb-layer.zip . && cd ..
 
       - name: Install AWS CLI
         uses: unfor19/install-aws-cli-action@v1
@@ -236,4 +171,69 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_EC2_METADATA_DISABLED: 'true'
-        run: bash $PWD/publish_layer.sh duckdb-nodejs-extensions-test-x86
+        run: bash $PWD/publish_layer.sh duckdb-nodejs-x86-test
+
+  # publish_layer_with_extensions:
+  #   name: Publish layer with extensions
+  #   runs-on: ubuntu-latest
+  #   needs: [build_geo_extension, build_prql_extension, build_scrooge_extension, build_duckdb_node]
+
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
+
+  #     - uses: actions/download-artifact@v3
+  #       with:
+  #         name: duckdb-node-zip
+
+  #     - uses: actions/download-artifact@v3
+  #       with:
+  #         name: geo-extension
+
+  #     - uses: actions/download-artifact@v3
+  #       with:
+  #         name: prql-extension
+
+  #     - uses: actions/download-artifact@v3
+  #       with:
+  #         name: scrooge-extension
+
+  #     - name: Repackage & build layer
+  #       run: |
+  #         # Export extension dir
+  #         export EXTENSION_DIR="$PWD/layer/nodejs/node_modules/duckdb/extensions"
+
+  #         # Create layer folder
+  #         mkdir -p $PWD/layer
+
+  #         ls -la
+
+  #         # Unzip to layer folder
+  #         unzip -d layer/ $PWD/duckdb-layer.zip
+
+  #         # Delete original archive
+  #         rm $PWD/duckdb-layer.zip
+
+  #         # Create extension directory
+  #         mkdir -p $EXTENSION_DIR
+
+  #         # Add extensions
+  #         mv $PWD/geo.duckdb_extension $EXTENSION_DIR
+  #         mv $PWD/prql.duckdb_extension $EXTENSION_DIR
+  #         mv $PWD/scrooge.duckdb_extension $EXTENSION_DIR
+
+  #         # Show directory structure
+  #         tree $PWD/layer
+
+  #         # Zip layer
+  #         cd $PWD/layer && zip -q -r ../duckdb-layer.zip . && cd ..
+
+  #     - name: Install AWS CLI
+  #       uses: unfor19/install-aws-cli-action@v1
+
+  #     - name: Publish layer
+  #       env:
+  #         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #         AWS_EC2_METADATA_DISABLED: 'true'
+  #       run: bash $PWD/publish_layer.sh duckdb-nodejs-extensions-test-x86
