@@ -127,28 +127,8 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           DUCKDB_VERSION: '0.8.0'
-        run: |
-          # Create layer folder
-          mkdir -p $PWD/layer
-
-          # Unzip to layer folder
-          unzip -d layer/ $PWD/duckdb-layer.zip
-
-          cd $PWD/layer/nodejs/node_modules/duckdb
-
-          # Set package version to DuckDB version (make sure it doesn't fail if the same version exists locally)
-          npm version $DUCKDB_VERSION || true
-
-          # Check the lastest published package version
-          CURRENT_PUBLISHED_PACKAGE_VERSION="${$(npm view duckdb-lambda version 2>/dev/null):-not_published}"
-          # Check local package version
-          CURRENT_LOCAL_PACKAGE_VERSION=$(node -p "require('./package.json').version")
-
-          # Check if package shall be published
-          if [[ "$CURRENT_PUBLISHED_PACKAGE_VERSION" = "not_published" || "$CURRENT_LOCAL_PACKAGE_VERSION" != "$CURRENT_PUBLISHED_PACKAGE_VERSION" ]]; then
-            # Publish to npm
-            npm publish
-          fi
+        run: bash $PWD/publish_package.sh
+          
 
   publish_layer_without_extensions_x86:
     name: Publish layer without extensions
