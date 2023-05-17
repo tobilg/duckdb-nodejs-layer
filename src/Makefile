@@ -7,10 +7,10 @@ src/duckdb/src/include/duckdb.hpp:
 	npm install --build-from-source
 
 build: ./node_modules src/duckdb/src/include/duckdb.hpp
-	./node_modules/.bin/node-pre-gyp build -j 4 --loglevel=silent
+	./node_modules/.bin/node-pre-gyp build -j $(nproc) --loglevel=silent
 
 debug: ./node_modules src/duckdb/src/include/duckdb.hpp
-	./node_modules/.bin/node-pre-gyp build -j 4 --debug --verbose
+	./node_modules/.bin/node-pre-gyp build -j $(nproc) --debug --verbose
 
 clean:
 	@rm -rf ./build
