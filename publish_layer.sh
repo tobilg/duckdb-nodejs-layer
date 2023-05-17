@@ -1,10 +1,10 @@
 #!/bin/bash -e
 
 # AWS Regions
-# REGIONS=$(aws ssm get-parameters-by-path --region us-east-1 \
-#     --path /aws/service/global-infrastructure/regions \
-#     --query 'Parameters[].Value | sort(@)' --output text)
-REGIONS=(us-east-1)
+REGIONS=$(aws ssm get-parameters-by-path --region us-east-1 \
+  --path /aws/service/global-infrastructure/regions \
+  --query 'Parameters[].Value | sort(@)' --output text)
+#REGIONS=(us-east-1)
 
 LAYER_NAME="$1"
 DESCRIPTION="Run DuckDB Node.js in AWS Lambda (https://github.com/tobilg/duckdb-nodejs-layer)"
