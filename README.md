@@ -12,9 +12,34 @@ You can use the published layers in your own serverless applications by referenc
 The layers get automatically published to all currently available (in the moment of publishing) AWS regions.
 
 ## Example usage
-Hava a look at the example repository which uses this AWS Lambda layer:
+You can have a look at the example repository, which uses this AWS Lambda layer: [tobilg/serverless-duckdb](https://github.com/tobilg/serverless-duckdb). More specifically, the [src/functions/query.js](https://github.com/tobilg/serverless-duckdb/blob/main/src/functions/query.js) should give you a good idea on how it can be used.
 
-* https://github.com/tobilg/serverless-duckdb
+The recommendation is to use a bundler such as WebPack for the packaging of your application. This means you can locally use (e.g. for testing) the official [duckdb](https://www.npmjs.com/package/duckdb) npm package (via `npm i --save duckdb`), but [exclude it](https://github.com/tobilg/serverless-duckdb/blob/main/webpack.config.serverless.js#L27) in the packaging process, because after being deployed to a Lambda function, the updated DuckDB version from the Lambda layer will be used.
+
+### Code example
+
+```javascript
+import DuckDB from 'duckdb';
+
+// Instantiate DuckDB
+const duckDB = new DuckDB.Database(':memory:');
+
+// Create connection
+const connection = duckDB.connect();
+
+// Promisify query method
+const query = (query) => {
+  return new Promise((resolve, reject) => {
+    connection.all(query, (err, res) => {
+      if (err) reject(err);
+      resolve(res);
+    })
+  })
+}
+
+// Will show DuckDB version
+await query(`PRAGMA version;`);
+```
 
 # Layer flavors
 The layer comes in two different flavors, one "pure" DuckDB layer with some basic extensions enabled, and a version that contains selected community extensions.

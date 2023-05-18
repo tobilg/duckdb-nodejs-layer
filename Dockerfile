@@ -29,6 +29,7 @@ COPY src/package.json /tmp/from-git/duckdb/tools/nodejs/package.json
 # Create zip file with layer contents
 RUN mkdir -p /tmp/build/nodejs/node_modules/duckdb/lib /tmp/build/nodejs/node_modules/duckdb/release /tmp/release && \
   cp /tmp/from-git/duckdb/tools/nodejs/lib/*.js /tmp/build/nodejs/node_modules/duckdb/lib && \
+  cp /tmp/from-git/duckdb/tools/nodejs/README.md /tmp/build/nodejs/node_modules/duckdb/README.md && \
   cp /tmp/from-git/duckdb/tools/nodejs/package.json /tmp/build/nodejs/node_modules/duckdb/package.json && \
   cp /tmp/from-git/duckdb/tools/nodejs/duckdb.js /tmp/build/nodejs/node_modules/duckdb/duckdb.js && \
   cp /tmp/from-git/duckdb/tools/nodejs/build/Release/duckdb.node /tmp/build/nodejs/node_modules/duckdb/release/duckdb.node && \
