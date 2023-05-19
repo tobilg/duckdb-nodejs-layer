@@ -26,6 +26,9 @@ COPY src/lib/duckdb-binding.js /tmp/from-git/duckdb/tools/nodejs/lib/duckdb-bind
 # Copy updated package.json
 COPY src/package.json /tmp/from-git/duckdb/tools/nodejs/package.json
 
+# Copy updated README.md
+COPY src/README.md /tmp/from-git/duckdb/tools/nodejs/README.md
+
 # Create zip file with layer contents
 RUN mkdir -p /tmp/build/nodejs/node_modules/duckdb/lib /tmp/build/nodejs/node_modules/duckdb/release /tmp/release && \
   cp /tmp/from-git/duckdb/tools/nodejs/lib/*.js /tmp/build/nodejs/node_modules/duckdb/lib && \
