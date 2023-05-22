@@ -109,7 +109,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: duckdb-node-x86_64-zip
-          path: release/duckdb-layer-$ARCHITECTURE.zip
+          path: release/duckdb-layer-x86_64.zip
 
   build_duckdb_node_arm64:
     name: Build DuckDB Node Lambda layer for arm64
@@ -135,7 +135,7 @@ jobs:
           mkdir -p $PWD/release
 
           # Run build
-          docker buildx build --platform linux/arm64/v8 --build-arg DUCKDB_VERSION=$DUCKDB_VERSION --build-arg ARCHITECTURE=$ARCHITECTURE -t duckdb-lambda-$ARCHITECTURE -f Dockerfile.$ARCHITECTURE .
+          docker buildx build --platform linux/arm64/v8 --build-arg DUCKDB_VERSION=$DUCKDB_VERSION --build-arg ARCHITECTURE=$ARCHITECTURE -t duckdb-lambda-$ARCHITECTURE -f Dockerfile.$ARCHITECTURE --output type=docker .
 
           # Copy release from image
           docker run -v $PWD/release:/opt/mount --rm --entrypoint /bin/bash duckdb-lambda-$ARCHITECTURE -c "cp /tmp/release/duckdb-layer-$ARCHITECTURE.zip /opt/mount/"
@@ -144,7 +144,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: duckdb-node-arm64-zip
-          path: release/duckdb-layer-$ARCHITECTURE.zip
+          path: release/duckdb-layer-arm64.zip
 
   publish_npm_package_x86:
     name: Publish duckdb-lambda npm x86 package
