@@ -4,7 +4,7 @@
 mkdir -p $PWD/layer
 
 # Unzip to layer folder
-unzip -d layer/ $PWD/duckdb-layer.zip
+unzip -d layer/ $PWD/duckdb-layer-x86_64.zip
 
 cd $PWD/layer/nodejs/node_modules/duckdb
 
