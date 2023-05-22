@@ -1,6 +1,7 @@
-FROM amazon/aws-lambda-nodejs:16 as builder
+FROM public.ecr.aws/lambda/nodejs:16-arm64 as builder
 
 ARG DUCKDB_VERSION=0.8.0
+ARG ARCHITECTURE=arm64
 
 # Install dependencies
 RUN yum update -y && \
@@ -37,4 +38,4 @@ RUN mkdir -p /tmp/build/nodejs/node_modules/duckdb/lib /tmp/build/nodejs/node_mo
   cp /tmp/from-git/duckdb/tools/nodejs/duckdb.js /tmp/build/nodejs/node_modules/duckdb/duckdb.js && \
   cp /tmp/from-git/duckdb/tools/nodejs/build/Release/duckdb.node /tmp/build/nodejs/node_modules/duckdb/release/duckdb.node && \
   cd /tmp/build/nodejs/node_modules/duckdb && npm version ${DUCKDB_VERSION} || true && \
-  cd /tmp/build && zip -q -r /tmp/release/duckdb-layer.zip .
+  cd /tmp/build && zip -q -r /tmp/release/duckdb-layer-${ARCHITECTURE}.zip .
