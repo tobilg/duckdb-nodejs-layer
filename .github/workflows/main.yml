@@ -127,7 +127,7 @@ jobs:
           mkdir -p $PWD/release
 
           # Run build
-          docker buildx --platform linux/arm64/v8 --build-arg DUCKDB_VERSION=$DUCKDB_VERSION --build-arg ARCHITECTURE=$ARCHITECTURE -t duckdb-lambda-$ARCHITECTURE -f Dockerfile.$ARCHITECTURE .
+          docker buildx build --platform linux/arm64/v8 --build-arg DUCKDB_VERSION=$DUCKDB_VERSION --build-arg ARCHITECTURE=$ARCHITECTURE -t duckdb-lambda-$ARCHITECTURE -f Dockerfile.$ARCHITECTURE .
 
           # Copy release from image
           docker run -v $PWD/release:/opt/mount --rm --entrypoint /bin/bash duckdb-lambda-$ARCHITECTURE -c "cp /tmp/release/duckdb-layer-$ARCHITECTURE.zip /opt/mount/"
