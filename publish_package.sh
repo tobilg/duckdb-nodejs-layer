@@ -12,7 +12,7 @@ cd $PWD/layer/nodejs/node_modules/duckdb
 npm version $DUCKDB_VERSION 2>/dev/null || true
 
 # Check the lastest published package version
-CURRENT_PUBLISHED_PACKAGE_VERSION="${$(npm view duckdb-lambda version 2>/dev/null):-not_published}"
+CURRENT_PUBLISHED_PACKAGE_VERSION="${$(npm view duckdb-lambda-x86 version 2>/dev/null):-not_published}"
 # Check local package version
 CURRENT_LOCAL_PACKAGE_VERSION=$(node -p "require('./package.json').version")
 
