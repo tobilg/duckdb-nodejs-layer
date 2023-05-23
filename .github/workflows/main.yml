@@ -189,12 +189,12 @@ jobs:
       - name: Install AWS CLI
         uses: unfor19/install-aws-cli-action@v1
 
-      # - name: Publish layer for x86_64
-      #   env:
-      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #     AWS_EC2_METADATA_DISABLED: 'true'
-      #   run: bash $GITHUB_WORKSPACE/publish_layer.sh x86_64
+      - name: Publish layer for x86_64
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_EC2_METADATA_DISABLED: 'true'
+        run: bash $GITHUB_WORKSPACE/publish_layer.sh x86_64
 
       - name: Publish layer for arm64
         env:
