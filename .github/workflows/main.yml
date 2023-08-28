@@ -1,88 +1,39 @@
 name: Build DuckDB Lambda Layers
 
 on:
-  push:
-    branches: [ main ]
+  workflow_dispatch:
+
+  #push:
+  #  branches: [ main ]
 
 env:
-  DUCKDB_VERSION: '0.8.0'
+  DUCKDB_VERSION: '0.8.1'
 
 jobs:
 
-  # build_geo_extension:
-  #   name: Build and store geo extension
-  #   runs-on: ubuntu-latest
+  build_spatial_extension:
+    name: Build and store spatial extension
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v3
+      - name: Build spatial extension
+        run: |
+          # Create release folder
+          mkdir -p $PWD/release
 
-  #     - name: Build geo extension
-  #       run: |
-  #         # Create release folder
-  #         mkdir -p $PWD/release
+          # Run build
+          docker build -t duckdb-spatial-extension -f Dockerfile.spatial .
 
-  #         # Run build
-  #         docker build -t duckdb-geo-extension -f Dockerfile.geo .
+          # Copy release from image
+          docker run -v $PWD/release:/opt/mount --rm --entrypoint /bin/bash duckdb-spatial-extension -c "cp /tmp/release/spatial.duckdb_extension /opt/mount/"
 
-  #         # Copy release from image
-  #         docker run -v $PWD/release:/opt/mount --rm --entrypoint /bin/bash duckdb-geo-extension -c "cp /tmp/release/geo.duckdb_extension /opt/mount/"
-
-  #     - name: Upload geo extension artifact
-  #       uses: actions/upload-artifact@v3
-  #       with:
-  #         name: geo-extension
-  #         path: release/geo.duckdb_extension
-  
-  # build_prql_extension:
-  #   name: Build and store prql extension
-  #   runs-on: ubuntu-latest
-
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v3
-
-  #     - name: Build prql extension
-  #       run: |
-  #         # Create release folder
-  #         mkdir -p $PWD/release
-
-  #         # Run build
-  #         docker build -t duckdb-prql-extension -f Dockerfile.prql .
-
-  #         # Copy release from image
-  #         docker run -v $PWD/release:/opt/mount --rm --entrypoint /bin/bash duckdb-prql-extension -c "cp /tmp/release/prql.duckdb_extension /opt/mount/"
-
-  #     - name: Upload prql extension artifact
-  #       uses: actions/upload-artifact@v3
-  #       with:
-  #         name: prql-extension
-  #         path: release/prql.duckdb_extension
-
-  # build_scrooge_extension:
-  #   name: Build and store scrooge extension
-  #   runs-on: ubuntu-latest
-
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v3
-
-  #     - name: Build scrooge extension
-  #       run: |
-  #         # Create release folder
-  #         mkdir -p $PWD/release
-
-  #         # Run build
-  #         docker build -t duckdb-scrooge-extension -f Dockerfile.scrooge .
-
-  #         # Copy release from image
-  #         docker run -v $PWD/release:/opt/mount --rm --entrypoint /bin/bash duckdb-scrooge-extension -c "cp /tmp/release/scrooge.duckdb_extension /opt/mount/"
-
-  #     - name: Upload scrooge extension artifact
-  #       uses: actions/upload-artifact@v3
-  #       with:
-  #         name: scrooge-extension
-  #         path: release/scrooge.duckdb_extension
+      - name: Upload spatial extension artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: spatial-extension
+          path: release/spatial.duckdb_extension
   
   build_duckdb_node_x86_64:
     name: Build DuckDB Node Lambda layer for x86_64
@@ -206,7 +157,7 @@ jobs:
   # publish_layer_with_extensions:
   #   name: Publish layer with extensions
   #   runs-on: ubuntu-latest
-  #   needs: [build_geo_extension, build_prql_extension, build_scrooge_extension, build_duckdb_node]
+  #   needs: [build_spatial_extension, build_duckdb_node_x86_64]
 
   #   steps:
   #     - name: Checkout
@@ -214,19 +165,11 @@ jobs:
 
   #     - uses: actions/download-artifact@v3
   #       with:
-  #         name: duckdb-node-zip
+  #         name: duckdb-node-x86_64-zip
 
   #     - uses: actions/download-artifact@v3
   #       with:
-  #         name: geo-extension
-
-  #     - uses: actions/download-artifact@v3
-  #       with:
-  #         name: prql-extension
-
-  #     - uses: actions/download-artifact@v3
-  #       with:
-  #         name: scrooge-extension
+  #         name: spatial-extension
 
   #     - name: Repackage & build layer
   #       run: |
@@ -248,9 +191,7 @@ jobs:
   #         mkdir -p $EXTENSION_DIR
 
   #         # Add extensions
-  #         mv $PWD/geo.duckdb_extension $EXTENSION_DIR
-  #         mv $PWD/prql.duckdb_extension $EXTENSION_DIR
-  #         mv $PWD/scrooge.duckdb_extension $EXTENSION_DIR
+  #         mv $PWD/spatial.duckdb_extension $EXTENSION_DIR
 
   #         # Show directory structure
   #         tree $PWD/layer
@@ -266,4 +207,4 @@ jobs:
   #         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   #         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   #         AWS_EC2_METADATA_DISABLED: 'true'
-  #       run: bash $PWD/publish_layer.sh duckdb-nodejs-extensions-test-x86
+  #       run: bash $PWD/publish_extension_layer.sh
