@@ -11,7 +11,7 @@ COMPATIBLE_RUNTIMES="nodejs14.x nodejs16.x nodejs18.x"
 
 # Get parameters
 LAYER_NAME="duckdb-nodejs-extensions-test-x86"
-ARCHITECTURE="$1"
+ARCHITECTURE="x86_64"
 
 # Set description
 DESCRIPTION="Run DuckDB Node.js in AWS Lambda (https://github.com/tobilg/duckdb-nodejs-layer) for ${ARCHITECTURE}"
