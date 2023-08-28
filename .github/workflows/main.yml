@@ -182,10 +182,10 @@ jobs:
           ls -la
 
           # Unzip to layer folder
-          unzip -d layer/ $PWD/duckdb-layer.zip
+          unzip -d layer/ $PWD/duckdb-layer-x86_64.zip
 
           # Delete original archive
-          rm $PWD/duckdb-layer.zip
+          rm $PWD/duckdb-layer-x86_64.zip
 
           # Create extension directory
           mkdir -p $EXTENSION_DIR
@@ -197,7 +197,7 @@ jobs:
           tree $PWD/layer
 
           # Zip layer
-          cd $PWD/layer && zip -q -r ../duckdb-layer.zip . && cd ..
+          cd $PWD/layer && zip -q -r ../duckdb-layer-x86_64.zip . && cd ..
 
       - name: Install AWS CLI
         uses: unfor19/install-aws-cli-action@v1
