@@ -10,10 +10,11 @@ RUN yum update -y && \
     cpp.x86_64 sqlite-devel.x86_64 libtiff.x86_64 -y && \
   yum remove cmake -y && \
   pip install cmake --upgrade
-# openssl-static 
+
 # Get DuckDB sources
 RUN mkdir -p /tmp/from-git && cd /tmp/from-git && git clone https://github.com/duckdblabs/duckdb_spatial --branch $BRANCH --recurse-submodules --depth 1
 
+# Install and compile OpenSSL because the openssl-static package doesn't work
 RUN wget https://github.com/openssl/openssl/archive/refs/tags/OpenSSL_1_0_2u.tar.gz && \
   tar -xzvf OpenSSL_1_0_2u.tar.gz && \
   mv openssl-OpenSSL_1_0_2u openssl-1.0.2u && \
@@ -23,12 +24,15 @@ RUN wget https://github.com/openssl/openssl/archive/refs/tags/OpenSSL_1_0_2u.tar
   make && \
   make install
 
+# Build duckdb spatial extension
 RUN cd /tmp/from-git/duckdb_spatial && \
   export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH" && \
   STATIC_OPENSSL=1 STATIC_LIBCPP=1 OPENSSL_STATIC=1 OPENSSL_ROOT_DIR=/usr/local/ssl CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) make release
 
+# Copy artefact to the right directory
 RUN cp /tmp/from-git/duckdb_spatial/build/release/extension/spatial/spatial.duckdb_extension /tmp/from-git/duckdb_spatial/build/release/extension/spatial/spatial_complete.duckdb_extension
 
+# Strip binary
 RUN strip --strip-unneeded /tmp/from-git/duckdb_spatial/build/release/extension/spatial/spatial.duckdb_extension
 
 # Create zip file with layer contents
