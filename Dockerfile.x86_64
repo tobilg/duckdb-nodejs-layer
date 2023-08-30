@@ -16,7 +16,7 @@ RUN yum update -y && \
   pip install cmake --upgrade
 
 # Get DuckDB sources
-RUN mkdir -p /tmp/from-git && cd /tmp/from-git && git clone --branch "$GIT_BRANCH" https://github.com/duckdb/duckdb.git && cd duckdb && git fetch --all --tags
+RUN mkdir -p /tmp/from-git && cd /tmp/from-git && git clone --branch "$GIT_BRANCH" https://github.com/duckdb/duckdb.git && cd duckdb && git fetch --all --tags && git checkout a532702b9a50df8f21c56ed48e6cf0914cf0a1e1
 
 # Copy custom Makefile (less parallelism)
 COPY src/Makefile /tmp/from-git/duckdb/tools/nodejs/Makefile
