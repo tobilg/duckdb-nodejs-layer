@@ -24,7 +24,7 @@ jobs:
           mkdir -p $PWD/release
 
           # Run build
-          docker build -t duckdb-spatial-extension -f Dockerfile.spatial .
+          docker build -t duckdb-spatial-extension -f Dockerfile.spatial.extension .
 
           # Copy release from image
           docker run -v $PWD/release:/opt/mount --rm --entrypoint /bin/bash duckdb-spatial-extension -c "cp /tmp/release/spatial.duckdb_extension /opt/mount/"
@@ -35,11 +35,40 @@ jobs:
           name: spatial-extension
           path: release/spatial.duckdb_extension
   
-  build_duckdb_node_x86_64:
-    name: Build DuckDB Node Lambda layer for x86_64
+  # build_duckdb_node_x86_64:
+  #   name: Build DuckDB Node Lambda layer for x86_64
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     ARCHITECTURE: x86_64
+
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
+
+  #     - name: Build layer
+  #       run: |
+  #         # Create release folder
+  #         mkdir -p $PWD/release
+
+  #         # Run build
+  #         docker build --build-arg --build-arg DUCKDB_VERSION=$DUCKDB_VERSION --build-arg ARCHITECTURE=$ARCHITECTURE -t duckdb-lambda-$ARCHITECTURE -f Dockerfile.$ARCHITECTURE .
+
+  #         # Copy release from image
+  #         docker run -v $PWD/release:/opt/mount --rm --entrypoint /bin/bash duckdb-lambda-$ARCHITECTURE -c "cp /tmp/release/duckdb-layer-$ARCHITECTURE.zip /opt/mount/"
+
+  #     - name: Upload DuckDB Node build artifact
+  #       uses: actions/upload-artifact@v3
+  #       with:
+  #         name: duckdb-node-x86_64-zip
+  #         path: release/duckdb-layer-x86_64.zip
+
+  build_duckdb_node_for_spatial_extension_x86_64:
+    name: Build DuckDB Node for the spatial extension for x86_64
     runs-on: ubuntu-latest
     env:
       ARCHITECTURE: x86_64
+      # Needs to be the same as the commit hash of DuckDB referenced as submudule in https://github.com/duckdblabs/duckdb_spatial/tree/main
+      DUCKDB_COMMIT_HASH: 532702b9a50df8f21c56ed48e6cf0914cf0a1e1
 
     steps:
       - name: Checkout
@@ -51,15 +80,15 @@ jobs:
           mkdir -p $PWD/release
 
           # Run build
-          docker build --build-arg USE_BRANCH=main --build-arg DUCKDB_VERSION=$DUCKDB_VERSION --build-arg ARCHITECTURE=$ARCHITECTURE -t duckdb-lambda-$ARCHITECTURE -f Dockerfile.$ARCHITECTURE .
+          docker build --build-arg DUCKDB_COMMIT_HASH=$DUCKDB_COMMIT_HASH --build-arg DUCKDB_VERSION=$DUCKDB_VERSION --build-arg ARCHITECTURE=$ARCHITECTURE -t duckdb-lambda-spatial-$ARCHITECTURE -f Dockerfile.spatial.$ARCHITECTURE .
 
           # Copy release from image
-          docker run -v $PWD/release:/opt/mount --rm --entrypoint /bin/bash duckdb-lambda-$ARCHITECTURE -c "cp /tmp/release/duckdb-layer-$ARCHITECTURE.zip /opt/mount/"
+          docker run -v $PWD/release:/opt/mount --rm --entrypoint /bin/bash duckdb-lambda-spatial-$ARCHITECTURE -c "cp /tmp/release/duckdb-layer-$ARCHITECTURE.zip /opt/mount/"
 
       - name: Upload DuckDB Node build artifact
         uses: actions/upload-artifact@v3
         with:
-          name: duckdb-node-x86_64-zip
+          name: duckdb-node-spatial-x86_64-zip
           path: release/duckdb-layer-x86_64.zip
 
   # build_duckdb_node_arm64:
@@ -154,10 +183,10 @@ jobs:
   #         AWS_EC2_METADATA_DISABLED: 'true'
   #       run: bash $GITHUB_WORKSPACE/publish_layer.sh arm64
 
-  publish_layer_with_extensions:
-    name: Publish layer with extensions
+  publish_layer_with_spatial_extension:
+    name: Publish layer with spatial extension
     runs-on: ubuntu-latest
-    needs: [build_spatial_extension, build_duckdb_node_x86_64]
+    needs: [build_spatial_extension, build_duckdb_node_for_spatial_extension_x86_64]
 
     steps:
       - name: Checkout
@@ -165,7 +194,7 @@ jobs:
 
       - uses: actions/download-artifact@v3
         with:
-          name: duckdb-node-x86_64-zip
+          name: duckdb-node-spatial-x86_64-zip
 
       - uses: actions/download-artifact@v3
         with:
@@ -207,4 +236,4 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_EC2_METADATA_DISABLED: 'true'
-        run: bash $PWD/publish_extension_layer.sh
+        run: bash $PWD/publish_spatial_layer.sh
