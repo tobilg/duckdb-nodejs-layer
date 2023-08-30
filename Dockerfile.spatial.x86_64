@@ -1,6 +1,7 @@
 FROM amazon/aws-lambda-nodejs:16 as builder
 
 ARG DUCKDB_VERSION=0.8.1
+ARG DUCKDB_PRETEND_VERSION=0.8.2
 ARG DUCKDB_COMMIT_HASH=a532702b9a50df8f21c56ed48e6cf0914cf0a1e1
 ARG ARCHITECTURE=x86_64
 
@@ -11,7 +12,7 @@ RUN yum update -y && \
   pip install cmake --upgrade
 
 # Get DuckDB sources
-RUN mkdir -p /tmp/from-git && cd /tmp/from-git && git clone --branch "$GIT_BRANCH" https://github.com/duckdb/duckdb.git && cd duckdb && git fetch --all --tags && git checkout $DUCKDB_COMMIT_HASH
+RUN mkdir -p /tmp/from-git && cd /tmp/from-git && git clone --branch main https://github.com/duckdb/duckdb.git && cd duckdb && git fetch --all --tags && git checkout $DUCKDB_COMMIT_HASH
 
 # Copy custom Makefile (less parallelism)
 COPY src/Makefile /tmp/from-git/duckdb/tools/nodejs/Makefile
@@ -20,7 +21,7 @@ COPY src/Makefile /tmp/from-git/duckdb/tools/nodejs/Makefile
 COPY src/configure.py /tmp/from-git/duckdb/tools/nodejs/configure.py
 
 # Configure
-RUN cd /tmp/from-git/duckdb/tools/nodejs && ./configure && GEN=ninja EXTENSION_STATIC_BUILD=1 BUILD_TPCH=1 BUILD_HTTPFS=1 STATIC_OPENSSL=1 BUILD_NODE=1 SETUPTOOLS_SCM_PRETEND_VERSION="v0.8.2" CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) make
+RUN cd /tmp/from-git/duckdb/tools/nodejs && ./configure && GEN=ninja EXTENSION_STATIC_BUILD=1 BUILD_TPCH=1 BUILD_HTTPFS=1 STATIC_OPENSSL=1 BUILD_NODE=1 SETUPTOOLS_SCM_PRETEND_VERSION="v${DUCKDB_PRETEND_VERSION}" CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) make
 
 # Copy local binding definition
 COPY src/lib/duckdb-binding.js /tmp/from-git/duckdb/tools/nodejs/lib/duckdb-binding.js
