@@ -6,6 +6,9 @@ ARG USE_BRANCH
 
 ENV GIT_BRANCH=${USE_BRANCH:-v${DUCKDB_VERSION}}
 
+# Override version to match spatial extension version when building from main
+RUN if [ "$USE_BRANCH" = "main" ]; then export MANUAL_VERSION_OVERRIDE="SETUPTOOLS_SCM_PRETEND_VERSION=v0.8.2"; else export MANUAL_VERSION_OVERRIDE=""; fi
+
 # Install dependencies
 RUN yum update -y && \
   yum install git zip ninja-build make gcc-c++ openssl11-devel python-pip python3 -y && \
@@ -22,7 +25,7 @@ COPY src/Makefile /tmp/from-git/duckdb/tools/nodejs/Makefile
 COPY src/configure.py /tmp/from-git/duckdb/tools/nodejs/configure.py
 
 # Configure
-RUN cd /tmp/from-git/duckdb/tools/nodejs && ./configure && GEN=ninja EXTENSION_STATIC_BUILD=1 BUILD_TPCH=1 BUILD_HTTPFS=1 STATIC_OPENSSL=1 BUILD_NODE=1 CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) make
+RUN cd /tmp/from-git/duckdb/tools/nodejs && ./configure && GEN=ninja EXTENSION_STATIC_BUILD=1 BUILD_TPCH=1 BUILD_HTTPFS=1 STATIC_OPENSSL=1 BUILD_NODE=1 $MANUAL_VERSION_OVERRIDE CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) make
 
 # Copy local binding definition
 COPY src/lib/duckdb-binding.js /tmp/from-git/duckdb/tools/nodejs/lib/duckdb-binding.js
