@@ -1,0 +1,28 @@
+FROM amazon/aws-lambda-nodejs:16 as builder
+
+ARG BRANCH=main
+
+# Install dependencies
+RUN yum update -y && \
+  yum install git tar zip ninja-build make gcc-c++ python-pip glibc-devel \
+    libstdc++-devel wget zip unixODBC-devel glibc-devel readline-devel \
+    libcurl-devel expat-devel gettext unzip libffi-devel curl zlib-devel openssh \
+    cpp.x86_64 sqlite-devel.x86_64 libtiff.x86_64 -y && \
+  yum remove cmake -y && \
+  pip install cmake --upgrade
+
+# Get DuckDB sources
+RUN mkdir -p /tmp/from-git && cd /tmp/from-git && git clone https://github.com/duckdblabs/arrow.git --branch $BRANCH --recurse-submodules --depth 1
+
+# Build duckdb arrow extension
+RUN cd /tmp/from-git/arrow && \
+  MAKE_BUILD_PARALLEL_LEVEL=$(nproc) make release
+
+# Copy artefact to the right directory
+RUN cp /tmp/from-git/arrow/build/release/extension/arrow/arrow.duckdb_extension /tmp/from-git/arrow/build/release/extension/arrow/arrow_complete.duckdb_extension
+
+# Strip binary
+RUN strip --strip-unneeded /tmp/from-git/arrow/build/release/extension/arrow/arrow.duckdb_extension
+
+# Create zip file with layer contents
+RUN mkdir -p /tmp/release && cp /tmp/from-git/arrow/build/release/extension/arrow/arrow.duckdb_extension /tmp/release/arrow.duckdb_extension
