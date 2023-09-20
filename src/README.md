@@ -1,5 +1,5 @@
 # duckdb-lambda-x86
-This npm package contain the current DuckDB version (`0.8.0`) specifically built to be able to run on Amazon Linux 2-based environments, such as AWS Lambda functions (only with x86 architecture). The original [duckdb](https://www.npmjs.com/package/duckdb) npm package unfortunately doesn't work on AL2 due to the OSes outdated package versions, and the packaging. 
+This npm package contain the current DuckDB version specifically built to be able to run on Amazon Linux 2-based environments, such as AWS Lambda functions (only with x86 architecture). The original [duckdb](https://www.npmjs.com/package/duckdb) npm package unfortunately doesn't work on AL2 due to the OSes outdated package versions, and the packaging. 
 
 ## Installation
 You can install it for your project by running
