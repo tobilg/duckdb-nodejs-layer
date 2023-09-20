@@ -32,6 +32,11 @@ RUN mkdir -p /tmp/from-git && \
   git fetch --all --tags && \
   git checkout $DUCKDB_COMMIT_HASH
 
+# Install vcpkg
+RUN cd /tmp/from-git && \
+  git clone https://github.com/Microsoft/vcpkg.git && \
+  ./vcpkg/bootstrap-vcpkg.sh
+
 # Copy custom Makefile (less parallelism)
 COPY src/Makefile /tmp/from-git/duckdb/tools/nodejs/Makefile
 
@@ -41,16 +46,11 @@ COPY src/configure.py /tmp/from-git/duckdb/tools/nodejs/configure.py
 # Copy custom cmake extension config
 COPY src/duckdb_extension_config.cmake /tmp/from-git/duckdb/tools/nodejs/duckdb_extension_config.cmake
 
-# Install vcpkg
-RUN cd /tmp/from-git && \
-  git clone https://github.com/Microsoft/vcpkg.git && \
-  ./vcpkg/bootstrap-vcpkg.sh
-
 # Configure
 RUN cd /tmp/from-git/duckdb && \
   export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH" && \
   make extension_configuration && \
-  USE_MERGED_VCPKG_MANIFEST=1 EXTENSION_CONFIGS=/tmp/from-git/duckdb/tools/nodejs/duckdb_extension_config.cmake DVCPKG_BUILD=1 EXTENSION_STATIC_BUILD=1 BUILD_HTTPFS=1 STATIC_OPENSSL=1 STATIC_LIBCPP=1 OPENSSL_STATIC=1 OPENSSL_ROOT_DIR=/usr/local/ssl BUILD_NODE=1 SETUPTOOLS_SCM_PRETEND_VERSION="v${DUCKDB_PRETEND_VERSION}" CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) make
+  USE_MERGED_VCPKG_MANIFEST=1 CMAKE_TOOLCHAIN_FILE="/tmp/from-git/vcpkg/scripts/buildsystems/vcpkg.cmake" EXTENSION_CONFIGS=/tmp/from-git/duckdb/tools/nodejs/duckdb_extension_config.cmake EXTENSION_STATIC_BUILD=1 BUILD_HTTPFS=1 STATIC_OPENSSL=1 STATIC_LIBCPP=1 OPENSSL_STATIC=1 OPENSSL_ROOT_DIR=/usr/local/ssl BUILD_NODE=1 SETUPTOOLS_SCM_PRETEND_VERSION="v${DUCKDB_PRETEND_VERSION}" CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) make
 
 # Copy local binding definition
 # COPY src/lib/duckdb-binding.js /tmp/from-git/duckdb/tools/nodejs/lib/duckdb-binding.js
