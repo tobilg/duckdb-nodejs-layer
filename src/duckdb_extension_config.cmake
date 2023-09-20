@@ -25,12 +25,3 @@ if (NOT WIN32)
             APPLY_PATCHES
             )
 endif()
-
-################# SPATIAL
-duckdb_extension_load(spatial
-        DONT_LINK LOAD_TESTS
-        GIT_URL https://github.com/duckdblabs/duckdb_spatial.git
-        GIT_TAG 44c9e49bdf48d39c936c500b632ad3bd74825b04
-        INCLUDE_DIR spatial/include
-        TEST_DIR test/sql
-        )
