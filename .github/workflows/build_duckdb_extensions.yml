@@ -66,7 +66,7 @@ jobs:
     env:
       ARCHITECTURE: x86_64
       # Needs to be the same as the commit hash of DuckDB referenced as submudule in https://github.com/duckdblabs/duckdb_spatial/tree/main
-      DUCKDB_COMMIT_HASH: 57e2b43c9d913b87d3bf5de28cb037557c4e511a
+      DUCKDB_COMMIT_HASH: 9db510bd1105f883747baca317a9b63adedf0d8e
 
     steps:
       - name: Checkout

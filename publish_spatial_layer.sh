@@ -10,19 +10,19 @@ COMPATIBLE_ARCHITECTURES="x86_64"
 COMPATIBLE_RUNTIMES="nodejs14.x nodejs16.x nodejs18.x"
 
 # Get parameters
-LAYER_NAME="duckdb-nodejs-spatial-x86"
+LAYER_NAME="duckdb-nodejs-spatial-test-x86"
 ARCHITECTURE="x86_64"
 
 # Set description
 DESCRIPTION="Run DuckDB Node.js in AWS Lambda (https://github.com/tobilg/duckdb-nodejs-layer) for ${ARCHITECTURE} with the spatial extension built-in"
 
 # Set regions when x86_64
-if [[ $ARCHITECTURE == "x86_64" ]]; then
-  # List sourced from SSM
-  REGIONS=$(aws ssm get-parameters-by-path --region us-east-1 \
-    --path /aws/service/global-infrastructure/regions \
-    --query 'Parameters[].Value | sort(@)' --output text)
-fi
+# if [[ $ARCHITECTURE == "x86_64" ]]; then
+#   # List sourced from SSM
+#   REGIONS=$(aws ssm get-parameters-by-path --region us-east-1 \
+#     --path /aws/service/global-infrastructure/regions \
+#     --query 'Parameters[].Value | sort(@)' --output text)
+# fi
 
 # Set regions when arm64
 # if [[ $ARCHITECTURE == "arm64" ]]; then
