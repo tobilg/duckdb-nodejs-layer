@@ -35,30 +35,6 @@ jobs:
         with:
           name: spatial-extension
           path: release/spatial.duckdb_extension
-  
-  build_arrow_extension:
-    name: Build and store arrow extension
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Build arrow extension
-        run: |
-          # Create release folder
-          mkdir -p $PWD/release
-
-          # Run build
-          docker build -t duckdb-arrow-extension -f Dockerfile.arrow.extension .
-
-          # Copy release from image
-          docker run -v $PWD/release/extensions/v${DUCKDB_VERSION}:/opt/mount --rm --entrypoint /bin/bash duckdb-arrow-extension -c "cp /tmp/release/arrow.duckdb_extension /opt/mount/"
-
-      - name: Upload arrow extension artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: arrow-extension
-          path: release/extensions/v${DUCKDB_VERSION}/arrow.duckdb_extension
 
   build_duckdb_node_for_spatial_extension_x86_64:
     name: Build DuckDB Node for the spatial extension for x86_64
@@ -66,7 +42,7 @@ jobs:
     env:
       ARCHITECTURE: x86_64
       # Needs to be the same as the commit hash of DuckDB referenced as submudule in https://github.com/duckdblabs/duckdb_spatial/tree/main
-      DUCKDB_COMMIT_HASH: a532702b9a50df8f21c56ed48e6cf0914cf0a1e1
+      DUCKDB_COMMIT_HASH: 9db510bd1105f883747baca317a9b63adedf0d8e
 
     steps:
       - name: Checkout

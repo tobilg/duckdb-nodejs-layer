@@ -12,7 +12,7 @@ RUN yum update -y && \
   pip install cmake --upgrade
 
 # Get DuckDB sources
-RUN mkdir -p /tmp/from-git && cd /tmp/from-git && git clone https://github.com/duckdblabs/arrow.git --branch $BRANCH --recurse-submodules --depth 1
+RUN mkdir -p /tmp/from-git && cd /tmp/from-git && git clone https://github.com/tobilg/arrow --branch same-version --recurse-submodules --depth 1
 
 # Build duckdb arrow extension
 RUN cd /tmp/from-git/arrow && \
