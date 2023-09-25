@@ -16,12 +16,9 @@ duckdb_extension_load(json)
 duckdb_extension_load(parquet)
 duckdb_extension_load(visualizer)
 
-################# ARROW
-if (NOT WIN32)
-    duckdb_extension_load(arrow
-            LOAD_TESTS DONT_LINK
-            GIT_URL https://github.com/duckdblabs/arrow
-            GIT_TAG 1B5B9649D28CD7F79496FB3F2E4DD7B03BF90AC5
-            APPLY_PATCHES
-            )
-endif()
+duckdb_extension_load(postgres_scanner
+        DONT_LINK
+        GIT_URL https://github.com/duckdblabs/postgres_scanner
+        GIT_TAG 828578442d18fb3acb53b08f4f54a0683217a2c8
+	APPLY_PATCHES
+        )
