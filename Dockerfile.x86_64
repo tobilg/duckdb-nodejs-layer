@@ -1,6 +1,6 @@
 FROM amazon/aws-lambda-nodejs:16 as builder
 
-ARG DUCKDB_VERSION=0.8.1
+ARG DUCKDB_VERSION=0.9.0
 ARG ARCHITECTURE=x86_64
 
 # Install dependencies

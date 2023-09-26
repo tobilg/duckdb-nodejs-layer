@@ -1,13 +1,7 @@
 FROM public.ecr.aws/lambda/nodejs:16-arm64 as builder
 
-ARG DUCKDB_VERSION=0.8.1
+ARG DUCKDB_VERSION=0.9.0
 ARG ARCHITECTURE=arm64
-ARG USE_BRANCH
-
-ENV GIT_BRANCH=${USE_BRANCH:-v${DUCKDB_VERSION}}
-
-# Override version to match spatial extension version when building from main
-RUN if [ "$USE_BRANCH" = "main" ]; then export PRETEND_VERSION="v0.8.2"; else export PRETEND_VERSION="v${DUCKDB_VERSION}"; fi
 
 # Install dependencies
 RUN yum update -y && \
@@ -16,7 +10,7 @@ RUN yum update -y && \
   pip install cmake --upgrade
 
 # Get DuckDB sources
-RUN mkdir -p /tmp/from-git && cd /tmp/from-git && git clone --branch "$GIT_BRANCH" https://github.com/duckdb/duckdb.git && cd duckdb && git fetch --all --tags
+RUN mkdir -p /tmp/from-git && cd /tmp/from-git && git clone --branch "v${DUCKDB_VERSION}" https://github.com/duckdb/duckdb.git && cd duckdb
 
 # Copy custom Makefile (less parallelism)
 COPY src/Makefile /tmp/from-git/duckdb/tools/nodejs/Makefile
