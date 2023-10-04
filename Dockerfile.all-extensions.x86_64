@@ -1,28 +1,17 @@
 FROM amazon/aws-lambda-nodejs:16 as builder
 
-ARG DUCKDB_VERSION=0.8.1
-ARG DUCKDB_PRETEND_VERSION=0.8.2
-ARG DUCKDB_COMMIT_HASH=57e2b43c9d913b87d3bf5de28cb037557c4e511a
+ARG DUCKDB_VERSION=0.9.0
+ARG DUCKDB_COMMIT_HASH=474a0bd68377edb26f6047263a4c19784bb17aea
 ARG ARCHITECTURE=x86_64
 
 # Install dependencies
 RUN yum update -y && \
   yum install git tar zip ninja-build make gcc-c++ python-pip glibc-devel \
     libstdc++-devel wget java-1.8.0-openjdk zip maven unixODBC-devel glibc-devel readline-devel \
-    libcurl-devel expat-devel gettext unzip libffi-devel curl zlib-devel openssh \
-    cpp.x86_64 sqlite-devel.x86_64 libtiff.x86_64 openssl11-devel python-pip python3 -y && \
+    libcurl-devel expat-devel gettext unzip libffi-devel curl zlib-devel libuuid-devel pulseaudio-libs-devel openssh \
+    cpp.x86_64 sqlite-devel.x86_64 libtiff.x86_64 kernel-headers perl-IPC-Cmd perl-Data-Dumper python-pip python3 -y && \
   yum remove cmake -y && \
   pip install cmake --upgrade
-
-# Install and compile OpenSSL because the openssl-static package doesn't work
-RUN wget https://github.com/openssl/openssl/archive/refs/tags/OpenSSL_1_0_2u.tar.gz && \
-  tar -xzvf OpenSSL_1_0_2u.tar.gz && \
-  mv openssl-OpenSSL_1_0_2u openssl-1.0.2u && \
-  cd openssl-1.0.2u && \
-  find ./ -type f -exec sed -i -e 's/\#\ define\ OPENSSL\_VERSION\_NUMBER/\#define\ OPENSSL\_VERSION\_NUMBER/g' {} \; && \
-  ./config --libdir=lib shared zlib-dynamic && \
-  make && \
-  make install
 
 # Get DuckDB sources for specific commit
 RUN mkdir -p /tmp/from-git && \
@@ -30,7 +19,12 @@ RUN mkdir -p /tmp/from-git && \
   git clone --branch main https://github.com/duckdb/duckdb.git && \
   cd duckdb && \
   git fetch --all --tags && \
-  git checkout $DUCKDB_COMMIT_HASH
+  git checkout v${DUCKDB_VERSION}
+
+# Install vcpkg
+RUN cd /tmp/from-git && \
+  git clone https://github.com/Microsoft/vcpkg.git && \
+  ./vcpkg/bootstrap-vcpkg.sh -disableMetrics
 
 # Copy custom Makefile (less parallelism)
 COPY src/Makefile /tmp/from-git/duckdb/tools/nodejs/Makefile
@@ -39,29 +33,33 @@ COPY src/Makefile /tmp/from-git/duckdb/tools/nodejs/Makefile
 COPY src/configure.py /tmp/from-git/duckdb/tools/nodejs/configure.py
 
 # Copy custom cmake extension config
-COPY src/duckdb_extension_config.cmake /tmp/from-git/duckdb/tools/nodejs/duckdb_extension_config.cmake
+COPY src/duckdb_extension_config.cmake /tmp/from-git/duckdb/extension/extension_config_local.cmake
 
 # Configure
-RUN cd /tmp/from-git/duckdb/tools/nodejs && \
-  export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH" && \
-  ./configure && \
-  GEN=ninja EXTENSION_CONFIGS=./duckdb_extension_config.cmake EXTENSION_STATIC_BUILD=1 BUILD_HTTPFS=1 STATIC_OPENSSL=1 STATIC_LIBCPP=1 OPENSSL_STATIC=1 OPENSSL_ROOT_DIR=/usr/local/ssl BUILD_NODE=1 SETUPTOOLS_SCM_PRETEND_VERSION="v${DUCKDB_PRETEND_VERSION}" CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) make
+RUN cd /tmp/from-git/duckdb && \
+  export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:/tmp/from-git/vcpkg:$PATH" && \
+  make extension_configuration && \
+  vcpkg install openssl
+
+RUN cd /tmp/from-git/duckdb && \
+  export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:/tmp/from-git/vcpkg:$PATH" && \
+  OPENSSL_ROOT_DIR=/tmp/from-git/vcpkg/packages/openssl_x64-linux USE_MERGED_VCPKG_MANIFEST=1 CMAKE_TOOLCHAIN_FILE="/tmp/from-git/vcpkg/scripts/buildsystems/vcpkg.cmake" EXTENSION_CONFIGS="/tmp/from-git/duckdb/tools/nodejs/duckdb_extension_config.cmake" EXTENSION_STATIC_BUILD=1 BUILD_HTTPFS=1 STATIC_LIBCPP=1 CMAKE_BUILD_PROGRAM="/usr/bin/make" CMAKE_VARS="-DOPENSSL_ROOT_DIR=/tmp/from-git/vcpkg/packages/openssl_x64-linux -DCMAKE_TOOLCHAIN_FILE=/tmp/from-git/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-linux -DVCPKG_BUILD=1" CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) make
 
 # Copy local binding definition
-COPY src/lib/duckdb-binding.js /tmp/from-git/duckdb/tools/nodejs/lib/duckdb-binding.js
+# COPY src/lib/duckdb-binding.js /tmp/from-git/duckdb/tools/nodejs/lib/duckdb-binding.js
 
-# Copy updated package.json
-COPY src/package.json /tmp/from-git/duckdb/tools/nodejs/package.json
+# # Copy updated package.json
+# COPY src/package.json /tmp/from-git/duckdb/tools/nodejs/package.json
 
-# Copy updated README.md
-COPY src/README.md /tmp/from-git/duckdb/tools/nodejs/README.md
+# # Copy updated README.md
+# COPY src/README.md /tmp/from-git/duckdb/tools/nodejs/README.md
 
-# Create zip file with layer contents
-RUN mkdir -p /tmp/build/nodejs/node_modules/duckdb/lib /tmp/build/nodejs/node_modules/duckdb/release /tmp/release && \
-  cp /tmp/from-git/duckdb/tools/nodejs/lib/*.js /tmp/build/nodejs/node_modules/duckdb/lib && \
-  cp /tmp/from-git/duckdb/tools/nodejs/README.md /tmp/build/nodejs/node_modules/duckdb/README.md && \
-  cp /tmp/from-git/duckdb/tools/nodejs/package.json /tmp/build/nodejs/node_modules/duckdb/package.json && \
-  cp /tmp/from-git/duckdb/tools/nodejs/duckdb.js /tmp/build/nodejs/node_modules/duckdb/duckdb.js && \
-  cp /tmp/from-git/duckdb/tools/nodejs/build/Release/duckdb.node /tmp/build/nodejs/node_modules/duckdb/release/duckdb.node && \
-  cd /tmp/build/nodejs/node_modules/duckdb && npm version ${DUCKDB_VERSION} || true && \
-  cd /tmp/build && zip -q -r /tmp/release/duckdb-layer-${ARCHITECTURE}.zip .
+# # Create zip file with layer contents
+# RUN mkdir -p /tmp/build/nodejs/node_modules/duckdb/lib /tmp/build/nodejs/node_modules/duckdb/release /tmp/release && \
+#   cp /tmp/from-git/duckdb/tools/nodejs/lib/*.js /tmp/build/nodejs/node_modules/duckdb/lib && \
+#   cp /tmp/from-git/duckdb/tools/nodejs/README.md /tmp/build/nodejs/node_modules/duckdb/README.md && \
+#   cp /tmp/from-git/duckdb/tools/nodejs/package.json /tmp/build/nodejs/node_modules/duckdb/package.json && \
+#   cp /tmp/from-git/duckdb/tools/nodejs/duckdb.js /tmp/build/nodejs/node_modules/duckdb/duckdb.js && \
+#   cp /tmp/from-git/duckdb/tools/nodejs/build/Release/duckdb.node /tmp/build/nodejs/node_modules/duckdb/release/duckdb.node && \
+#   cd /tmp/build/nodejs/node_modules/duckdb && npm version ${DUCKDB_VERSION} || true && \
+#   cd /tmp/build && zip -q -r /tmp/release/duckdb-layer-${ARCHITECTURE}.zip .
