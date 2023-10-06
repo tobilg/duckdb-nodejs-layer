@@ -11,6 +11,29 @@ env:
   DUCKDB_VERSION: '0.9.0'
 
 jobs:
+  build_all_extensions:
+    name: Build and store all extensions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Build extensions
+        run: |
+          # Create release folder
+          mkdir -p $PWD/release/v{$DUCKDB_VERSION}
+
+          # Run build
+          docker build -t duckdb-all-extensions -f Dockerfile.all-extensions.x86_64 .
+
+          # Copy release from image
+          docker run -v $PWD/release/extensions/v0.9.0:/opt/mount --rm --entrypoint /bin/bash duckdb-all-extensions -c "cp /tmp/release/*.duckdb_extension /opt/mount/"
+
+      - name: Upload spatial extension artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: all-extensions
+          path: release/*.duckdb_extension
 
   build_spatial_extension:
     name: Build and store spatial extension
