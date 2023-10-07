@@ -38,5 +38,5 @@ jobs:
           context: .
           file: Dockerfile.extensions-base.x86_64
           push: true
-          tags: latest
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
