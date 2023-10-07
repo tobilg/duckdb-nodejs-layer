@@ -5,7 +5,7 @@ ARG ARCHITECTURE=x86_64
 
 # Install dependencies
 RUN yum update -y && \
-  yum install git tar zip ninja-build make gcc-c++ python-pip glibc-devel \
+  yum install git tar zip ninja-build make gcc-c++ python-pip glibc-devel flex \
     libstdc++-devel wget java-1.8.0-openjdk zip maven unixODBC-devel glibc-devel readline-devel \
     libcurl-devel expat-devel gettext unzip libffi-devel curl zlib-devel libuuid-devel pulseaudio-libs-devel openssh \
     cpp.x86_64 sqlite-devel.x86_64 libtiff.x86_64 kernel-headers perl-IPC-Cmd perl-Data-Dumper python-pip python3 -y && \
