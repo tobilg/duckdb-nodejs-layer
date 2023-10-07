@@ -19,11 +19,11 @@ duckdb_extension_load(parquet)
 duckdb_extension_load(sqlsmith)
 duckdb_extension_load(visualizer)
 
-################# SPATIAL
-duckdb_extension_load(spatial
-        DONT_LINK LOAD_TESTS
-        GIT_URL https://github.com/duckdblabs/duckdb_spatial.git
-        GIT_TAG 36e5a126976ac3b66716893360ef7e6295707082
-        INCLUDE_DIR spatial/include
-        TEST_DIR test/sql
-        )
+################# ARROW
+if (NOT WIN32)
+    duckdb_extension_load(arrow
+            LOAD_TESTS DONT_LINK
+            GIT_URL https://github.com/duckdblabs/arrow
+            GIT_TAG 1b5b9649d28cd7f79496fb3f2e4dd7b03bf90ac5
+            )
+endif()
