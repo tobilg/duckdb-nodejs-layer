@@ -15,11 +15,12 @@ RUN cd /tmp && \
   cd cmake-3.27.6 && \
   export PATH="OPENSSL_ROOT_DIR=/usr/local/ssl:$PATH" && \
   ./bootstrap && \
-  make && \
+  CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) make && \
   make install
 
 # Install vcpkg
-RUN cd /tmp/from-git && \
+RUN mkdir -p /tmp/from-git && \
+  cd /tmp/from-git && \
   git clone https://github.com/Microsoft/vcpkg.git && \
   ./vcpkg/bootstrap-vcpkg.sh -disableMetrics
 
