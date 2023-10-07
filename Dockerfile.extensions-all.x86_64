@@ -1,23 +1,15 @@
-FROM ghcr.io/tobilg/duckdb-nodejs-layer as builder
+FROM ghcr.io/tobilg/duckdb-nodejs-layer:latest as builder
 
 ARG DUCKDB_VERSION=0.9.0
 ARG ARCHITECTURE=x86_64
 
-# Install dependencies
-RUN yum update -y && \
-  yum install git tar zip ninja-build make gcc-c++ python-pip glibc-devel flex \
-    libstdc++-devel wget java-1.8.0-openjdk zip maven unixODBC-devel glibc-devel readline-devel \
-    libcurl-devel expat-devel gettext unzip libffi-devel curl zlib-devel libuuid-devel pulseaudio-libs-devel openssh \
-    cpp.x86_64 sqlite-devel.x86_64 libtiff.x86_64 kernel-headers perl-IPC-Cmd perl-Data-Dumper python-pip python3 -y && \
-  yum remove cmake -y
-
-RUN yum install openssl11 openssl11-devel -y
-
-# Copy custom Makefile (less parallelism)
-COPY src/Makefile /tmp/from-git/duckdb/tools/nodejs/Makefile
-
-# Copy custom configure.py
-COPY src/configure.py /tmp/from-git/duckdb/tools/nodejs/configure.py
+# Get DuckDB sources for specific commit
+RUN mkdir -p /tmp/from-git && \
+  cd /tmp/from-git && \
+  git clone --branch main https://github.com/duckdb/duckdb.git && \
+  cd duckdb && \
+  git fetch --all --tags && \
+  git checkout v${DUCKDB_VERSION}
 
 # Copy custom cmake extension config
 COPY src/duckdb_extension_config.cmake /tmp/from-git/duckdb/extension/extension_config_local.cmake

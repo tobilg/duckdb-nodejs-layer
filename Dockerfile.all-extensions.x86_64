@@ -45,18 +45,18 @@ COPY src/configure.py /tmp/from-git/duckdb/tools/nodejs/configure.py
 COPY src/duckdb_extension_config.cmake /tmp/from-git/duckdb/extension/extension_config_local.cmake
 
 # Configure
-# RUN cd /tmp/from-git/duckdb && \
-#   export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:/tmp/from-git/vcpkg:$PATH" && \
-#   make extension_configuration && \
-#   vcpkg install openssl
+RUN cd /tmp/from-git/duckdb && \
+  export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:/tmp/from-git/vcpkg:$PATH" && \
+  make extension_configuration && \
+  vcpkg install openssl
 
-# RUN cd /tmp/from-git/duckdb && \
-#   ln -s /usr/bin/ninja-build /usr/bin/ninja && \
-#   export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:/tmp/from-git/vcpkg:$PATH" && \
-#   CMAKE_GENERATOR=Ninja OPENSSL_ROOT_DIR=/tmp/from-git/vcpkg/packages/openssl_x64-linux USE_MERGED_VCPKG_MANIFEST=1 CMAKE_TOOLCHAIN_FILE="/tmp/from-git/vcpkg/scripts/buildsystems/vcpkg.cmake" EXTENSION_CONFIGS="/tmp/from-git/duckdb/tools/nodejs/duckdb_extension_config.cmake" EXTENSION_STATIC_BUILD=1 BUILD_HTTPFS=1 STATIC_LIBCPP=1 CMAKE_BUILD_PROGRAM="/usr/bin/make" CMAKE_VARS="-DOPENSSL_ROOT_DIR=/tmp/from-git/vcpkg/packages/openssl_x64-linux -DCMAKE_TOOLCHAIN_FILE=/tmp/from-git/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-linux -DVCPKG_BUILD=1 -GNinja" CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) make
+RUN cd /tmp/from-git/duckdb && \
+  ln -s /usr/bin/ninja-build /usr/bin/ninja && \
+  export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:/tmp/from-git/vcpkg:$PATH" && \
+  CMAKE_GENERATOR=Ninja OPENSSL_ROOT_DIR=/tmp/from-git/vcpkg/packages/openssl_x64-linux USE_MERGED_VCPKG_MANIFEST=1 CMAKE_TOOLCHAIN_FILE="/tmp/from-git/vcpkg/scripts/buildsystems/vcpkg.cmake" EXTENSION_CONFIGS="/tmp/from-git/duckdb/tools/nodejs/duckdb_extension_config.cmake" EXTENSION_STATIC_BUILD=1 BUILD_HTTPFS=1 STATIC_LIBCPP=1 CMAKE_BUILD_PROGRAM="/usr/bin/make" CMAKE_VARS="-DOPENSSL_ROOT_DIR=/tmp/from-git/vcpkg/packages/openssl_x64-linux -DCMAKE_TOOLCHAIN_FILE=/tmp/from-git/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-linux -DVCPKG_BUILD=1 -GNinja" CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) make
 
-# RUN mkdir -p /tmp/release && \
-#   cp /tmp/from-git/duckdb/build/release/extension/*/*.duckdb_extension /tmp/release
+RUN mkdir -p /tmp/release && \
+  cp /tmp/from-git/duckdb/build/release/extension/*/*.duckdb_extension /tmp/release
 
-# # Strip binary
-# RUN strip --strip-unneeded /tmp/release/*.duckdb_extension
+# Strip binary
+RUN strip --strip-unneeded /tmp/release/*.duckdb_extension
