@@ -9,8 +9,20 @@
 
 # See https://github.com/duckdb/duckdb/blob/main/.github/config/out_of_tree_extensions.cmake
 
-duckdb_extension_load(aws
-        LOAD_TESTS
-        GIT_URL https://github.com/duckdblabs/duckdb_aws
-        GIT_TAG 348ae2625de86ab760f80a43eb76e4441cd01354
+duckdb_extension_load(postgres_scanner
+        DONT_LINK
+        GIT_URL https://github.com/duckdblabs/postgres_scanner
+        GIT_TAG 844f46536b5d5f9e65b57b7ff92f4ce3346e2829
+        )
+
+if (WIN32)
+    set(STATIC_LINK_SQLITE "DONT_LINK")
+else ()
+    set(STATIC_LINK_SQLITE "")
+endif()
+
+duckdb_extension_load(sqlite_scanner
+        ${STATIC_LINK_SQLITE} LOAD_TESTS
+        GIT_URL https://github.com/duckdblabs/sqlite_scanner
+        GIT_TAG 3443b2999ae1e68a108568fd32145705237a5760
         )
