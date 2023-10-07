@@ -1,4 +1,4 @@
-FROM amazon/aws-lambda-nodejs:16 as builder
+FROM ghcr.io/tobilg/duckdb-nodejs-layer as builder
 
 ARG DUCKDB_VERSION=0.9.0
 ARG ARCHITECTURE=x86_64
@@ -12,28 +12,6 @@ RUN yum update -y && \
   yum remove cmake -y
 
 RUN yum install openssl11 openssl11-devel -y
-
-RUN cd /tmp && \
-  wget https://github.com/Kitware/CMake/releases/download/v3.27.6/cmake-3.27.6.tar.gz && \
-  tar -xvzf cmake-3.27.6.tar.gz && \
-  cd cmake-3.27.6 && \
-  export PATH="OPENSSL_ROOT_DIR=/usr/local/ssl:$PATH" && \
-  ./bootstrap && \
-  make && \
-  make install
-
-# Get DuckDB sources for specific commit
-RUN mkdir -p /tmp/from-git && \
-  cd /tmp/from-git && \
-  git clone --branch main https://github.com/duckdb/duckdb.git && \
-  cd duckdb && \
-  git fetch --all --tags && \
-  git checkout v${DUCKDB_VERSION}
-
-# Install vcpkg
-RUN cd /tmp/from-git && \
-  git clone https://github.com/Microsoft/vcpkg.git && \
-  ./vcpkg/bootstrap-vcpkg.sh -disableMetrics
 
 # Copy custom Makefile (less parallelism)
 COPY src/Makefile /tmp/from-git/duckdb/tools/nodejs/Makefile
