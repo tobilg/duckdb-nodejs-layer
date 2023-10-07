@@ -9,21 +9,8 @@
 
 # See https://github.com/duckdb/duckdb/blob/main/.github/config/out_of_tree_extensions.cmake
 
-duckdb_extension_load(autocomplete)
-duckdb_extension_load(fts)
-duckdb_extension_load(httpfs)
-duckdb_extension_load(inet)
-duckdb_extension_load(icu)
-duckdb_extension_load(json)
-duckdb_extension_load(parquet)
-duckdb_extension_load(sqlsmith)
-duckdb_extension_load(visualizer)
-
-################# ARROW
-if (NOT WIN32)
-    duckdb_extension_load(arrow
-            LOAD_TESTS DONT_LINK
-            GIT_URL https://github.com/duckdblabs/arrow
-            GIT_TAG 1b5b9649d28cd7f79496fb3f2e4dd7b03bf90ac5
-            )
-endif()
+duckdb_extension_load(aws
+        LOAD_TESTS
+        GIT_URL https://github.com/duckdblabs/duckdb_aws
+        GIT_TAG 348ae2625de86ab760f80a43eb76e4441cd01354
+        )
