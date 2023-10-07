@@ -3,7 +3,7 @@ FROM amazon/aws-lambda-nodejs:18 as builder
 # Install dependencies
 RUN yum update -y && \
   yum install git tar zip ninja-build make gcc-c++ python-pip glibc-devel libstdc++-devel wget flex \
-    java-1.8.0-openjdk zip maven unixODBC-devel glibc-devel readline-devel libcurl-devel expat-devel \
+    java-1.8.0-openjdk zip maven unixODBC-devel glibc-devel readline-devel libcurl-devel expat-devel bison \
     gettext unzip libffi-devel curl zlib-devel libuuid-devel pulseaudio-libs-devel openssh python-pip python3 \
     cpp.x86_64 sqlite-devel.x86_64 libtiff.x86_64 kernel-headers perl-IPC-Cmd perl-Data-Dumper openssl11 openssl11-devel -y && \
   yum remove cmake -y

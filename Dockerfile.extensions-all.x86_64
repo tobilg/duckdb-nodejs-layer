@@ -18,7 +18,7 @@ COPY src/duckdb_extension_config.cmake /tmp/from-git/duckdb/extension/extension_
 RUN cd /tmp/from-git/duckdb && \
   export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:/tmp/from-git/vcpkg:$PATH" && \
   make extension_configuration && \
-  vcpkg install openssl
+  yum install bison -y
 
 RUN cd /tmp/from-git/duckdb && \
   export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:/tmp/from-git/vcpkg:$PATH" && \
