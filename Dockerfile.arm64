@@ -1,6 +1,6 @@
 FROM public.ecr.aws/lambda/nodejs:16-arm64 as builder
 
-ARG DUCKDB_VERSION=0.9.0
+ARG DUCKDB_VERSION=0.9.1
 ARG ARCHITECTURE=arm64
 
 # Install dependencies
@@ -10,32 +10,26 @@ RUN yum update -y && \
   pip install cmake --upgrade
 
 # Get DuckDB sources
-RUN mkdir -p /tmp/from-git && cd /tmp/from-git && git clone --branch "v${DUCKDB_VERSION}" https://github.com/duckdb/duckdb.git && cd duckdb
-
-# Copy custom Makefile (less parallelism)
-COPY src/Makefile /tmp/from-git/duckdb/tools/nodejs/Makefile
-
-# Copy custom configure.py (add httpfs extension)
-COPY src/configure.py /tmp/from-git/duckdb/tools/nodejs/configure.py
+RUN mkdir -p /tmp/from-git && cd /tmp/from-git && git clone --branch "main" https://github.com/duckdb/duckdb-node.git
 
 # Configure
-RUN cd /tmp/from-git/duckdb/tools/nodejs && ./configure && GEN=ninja EXTENSION_STATIC_BUILD=1 BUILD_TPCH=1 BUILD_HTTPFS=1 STATIC_OPENSSL=1 BUILD_NODE=1 SETUPTOOLS_SCM_PRETEND_VERSION=${PRETEND_VERSION} CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) make
+RUN cd /tmp/from-git/duckdb-node && npm i && STATIC_OPENSSL=1 CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) make
 
 # Copy local binding definition
-COPY src/lib/duckdb-binding.js /tmp/from-git/duckdb/tools/nodejs/lib/duckdb-binding.js
+COPY src/lib/duckdb-binding.js /tmp/from-git/duckdb-node/lib/duckdb-binding.js
 
 # Copy updated package.json
-COPY src/package.json /tmp/from-git/duckdb/tools/nodejs/package.json
+COPY src/package.json /tmp/from-git/duckdb-node/package.json
 
 # Copy updated README.md
-COPY src/README.md /tmp/from-git/duckdb/tools/nodejs/README.md
+COPY src/README.md /tmp/from-git/duckdb-node/README.md
 
 # Create zip file with layer contents
 RUN mkdir -p /tmp/build/nodejs/node_modules/duckdb/lib /tmp/build/nodejs/node_modules/duckdb/release /tmp/release && \
-  cp /tmp/from-git/duckdb/tools/nodejs/lib/*.js /tmp/build/nodejs/node_modules/duckdb/lib && \
-  cp /tmp/from-git/duckdb/tools/nodejs/README.md /tmp/build/nodejs/node_modules/duckdb/README.md && \
-  cp /tmp/from-git/duckdb/tools/nodejs/package.json /tmp/build/nodejs/node_modules/duckdb/package.json && \
-  cp /tmp/from-git/duckdb/tools/nodejs/duckdb.js /tmp/build/nodejs/node_modules/duckdb/duckdb.js && \
-  cp /tmp/from-git/duckdb/tools/nodejs/build/Release/duckdb.node /tmp/build/nodejs/node_modules/duckdb/release/duckdb.node && \
+  cp /tmp/from-git/duckdb-node/lib/*.js /tmp/build/nodejs/node_modules/duckdb/lib && \
+  cp /tmp/from-git/duckdb-node/README.md /tmp/build/nodejs/node_modules/duckdb/README.md && \
+  cp /tmp/from-git/duckdb-node/package.json /tmp/build/nodejs/node_modules/duckdb/package.json && \
+  cp /tmp/from-git/duckdb-node/duckdb.js /tmp/build/nodejs/node_modules/duckdb/duckdb.js && \
+  cp /tmp/from-git/duckdb-node/build/Release/duckdb.node /tmp/build/nodejs/node_modules/duckdb/release/duckdb.node && \
   cd /tmp/build/nodejs/node_modules/duckdb && npm version ${DUCKDB_VERSION} || true && \
   cd /tmp/build && zip -q -r /tmp/release/duckdb-layer-${ARCHITECTURE}.zip .

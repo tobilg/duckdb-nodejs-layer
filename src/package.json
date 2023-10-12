@@ -2,7 +2,7 @@
   "name": "duckdb-lambda-x86",
   "main": "./lib/duckdb.js",
   "types": "./lib/duckdb.d.ts",
-  "version": "0.8.0",
+  "version": "0.9.1",
   "description": "DuckDB Node.js package optimzed for usage in Amazon Linux 2-based environments, such as Lambda (x86 architecture)",
   "directories": {
     "lib": "lib",

@@ -15,21 +15,21 @@ RUN mkdir -p /tmp/from-git && cd /tmp/from-git && git clone --branch "main" http
 # Configure
 RUN cd /tmp/from-git/duckdb-node && npm i && STATIC_OPENSSL=1 CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) make
 
-# # Copy local binding definition
+# Copy local binding definition
 COPY src/lib/duckdb-binding.js /tmp/from-git/duckdb-node/lib/duckdb-binding.js
 
-# # Copy updated package.json
+# Copy updated package.json
 COPY src/package.json /tmp/from-git/duckdb-node/package.json
 
-# # Copy updated README.md
+# Copy updated README.md
 COPY src/README.md /tmp/from-git/duckdb-node/README.md
 
-# # Create zip file with layer contents
-# RUN mkdir -p /tmp/build/nodejs/node_modules/duckdb/lib /tmp/build/nodejs/node_modules/duckdb/release /tmp/release && \
-#   cp /tmp/from-git/duckdb-node/lib/*.js /tmp/build/nodejs/node_modules/duckdb/lib && \
-#   cp /tmp/from-git/duckdb-node/README.md /tmp/build/nodejs/node_modules/duckdb/README.md && \
-#   cp /tmp/from-git/duckdb-node/package.json /tmp/build/nodejs/node_modules/duckdb/package.json && \
-#   cp /tmp/from-git/duckdb-node/duckdb.js /tmp/build/nodejs/node_modules/duckdb/duckdb.js && \
-#   cp /tmp/from-git/duckdb-node/build/Release/duckdb.node /tmp/build/nodejs/node_modules/duckdb/release/duckdb.node && \
-#   cd /tmp/build/nodejs/node_modules/duckdb && npm version ${DUCKDB_VERSION} || true && \
-#   cd /tmp/build && zip -q -r /tmp/release/duckdb-layer-${ARCHITECTURE}.zip .
+# Create zip file with layer contents
+RUN mkdir -p /tmp/build/nodejs/node_modules/duckdb/lib /tmp/build/nodejs/node_modules/duckdb/release /tmp/release && \
+  cp /tmp/from-git/duckdb-node/lib/*.js /tmp/build/nodejs/node_modules/duckdb/lib && \
+  cp /tmp/from-git/duckdb-node/README.md /tmp/build/nodejs/node_modules/duckdb/README.md && \
+  cp /tmp/from-git/duckdb-node/package.json /tmp/build/nodejs/node_modules/duckdb/package.json && \
+  cp /tmp/from-git/duckdb-node/duckdb.js /tmp/build/nodejs/node_modules/duckdb/duckdb.js && \
+  cp /tmp/from-git/duckdb-node/build/Release/duckdb.node /tmp/build/nodejs/node_modules/duckdb/release/duckdb.node && \
+  cd /tmp/build/nodejs/node_modules/duckdb && npm version ${DUCKDB_VERSION} || true && \
+  cd /tmp/build && zip -q -r /tmp/release/duckdb-layer-${ARCHITECTURE}.zip .
