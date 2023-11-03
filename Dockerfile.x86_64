@@ -10,7 +10,12 @@ RUN yum update -y && \
   pip install cmake --upgrade
 
 # Get DuckDB sources
-RUN mkdir -p /tmp/from-git && cd /tmp/from-git && git clone --branch "main" https://github.com/duckdb/duckdb-node.git
+RUN mkdir -p /tmp/from-git && \
+  cd /tmp/from-git && \
+  git clone --branch "main" https://github.com/duckdb/duckdb-node.git && \
+  cd duckdb-node && \
+  git fetch --all --tags && \
+  git checkout v${DUCKDB_VERSION}
 
 # Configure
 RUN cd /tmp/from-git/duckdb-node && npm i && STATIC_OPENSSL=1 CMAKE_BUILD_PARALLEL_LEVEL=$(nproc) make
