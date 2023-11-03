@@ -36,69 +36,68 @@ jobs:
           name: duckdb-node-x86_64-zip
           path: release/duckdb-layer-x86_64.zip
 
-  # build_duckdb_node_arm64:
-  #   name: Build DuckDB Node Lambda layer for arm64
-  #   runs-on: ubuntu-latest
-  #   env:
-  #     ARCHITECTURE: arm64
+  build_duckdb_node_arm64:
+    name: Build DuckDB Node Lambda layer for arm64
+    runs-on: ubuntu-latest
+    env:
+      ARCHITECTURE: arm64
 
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-  #     - name: Set up QEMU
-  #       uses: docker/setup-qemu-action@v2
-  #       with:
-  #         platforms: 'arm64,arm'
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+        with:
+          platforms: 'arm64,arm'
           
-  #     - name: Set up Docker Buildx
-  #       uses: docker/setup-buildx-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
-  #     - name: Build layer
-  #       run: |
-  #         # Create release folder
-  #         mkdir -p $PWD/release
+      - name: Build layer
+        run: |
+          # Create release folder
+          mkdir -p $PWD/release
 
-  #         # Run build
-  #         docker buildx build --platform linux/arm64/v8 --build-arg DUCKDB_VERSION=$DUCKDB_VERSION --build-arg ARCHITECTURE=$ARCHITECTURE -t duckdb-lambda-$ARCHITECTURE -f Dockerfile.$ARCHITECTURE --output type=docker .
+          # Run build
+          docker buildx build --platform linux/arm64/v8 --build-arg DUCKDB_VERSION=$DUCKDB_VERSION --build-arg ARCHITECTURE=$ARCHITECTURE -t duckdb-lambda-$ARCHITECTURE -f Dockerfile.$ARCHITECTURE --output type=docker .
 
-  #         # Copy release from image
-  #         docker run -v $PWD/release:/opt/mount --rm --entrypoint /bin/bash duckdb-lambda-$ARCHITECTURE -c "cp /tmp/release/duckdb-layer-$ARCHITECTURE.zip /opt/mount/"
+          # Copy release from image
+          docker run -v $PWD/release:/opt/mount --rm --entrypoint /bin/bash duckdb-lambda-$ARCHITECTURE -c "cp /tmp/release/duckdb-layer-$ARCHITECTURE.zip /opt/mount/"
 
-  #     - name: Upload DuckDB Node build artifact
-  #       uses: actions/upload-artifact@v3
-  #       with:
-  #         name: duckdb-node-arm64-zip
-  #         path: release/duckdb-layer-arm64.zip
+      - name: Upload DuckDB Node build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: duckdb-node-arm64-zip
+          path: release/duckdb-layer-arm64.zip
 
-  # publish_npm_package_x86:
-  #   name: Publish duckdb-lambda npm x86 package
-  #   runs-on: ubuntu-latest
-  #   needs: [build_duckdb_node_x86_64]
+  publish_npm_package_x86:
+    name: Publish duckdb-lambda npm x86 package
+    runs-on: ubuntu-latest
+    needs: [build_duckdb_node_x86_64]
 
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
         
-  #     - uses: actions/setup-node@v3
-  #       with:
-  #         node-version: '16.x'
-  #         registry-url: 'https://registry.npmjs.org'
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          registry-url: 'https://registry.npmjs.org'
 
-  #     - uses: actions/download-artifact@v3
-  #       with:
-  #         name: duckdb-node-x86_64-zip
+      - uses: actions/download-artifact@v3
+        with:
+          name: duckdb-node-x86_64-zip
 
-  #     - name: Check for changes and eventually publish new package version
-  #       env:
-  #         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-  #       run: bash $GITHUB_WORKSPACE/publish_package.sh
+      - name: Check for changes and eventually publish new package version
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: bash $GITHUB_WORKSPACE/publish_package.sh
 
   publish_layer_without_extensions:
     name: Publish layer without extensions
     runs-on: ubuntu-latest
-    # needs: [build_duckdb_node_x86_64, build_duckdb_node_arm64]
-    needs: [build_duckdb_node_x86_64]
+    needs: [build_duckdb_node_x86_64, build_duckdb_node_arm64]
 
     steps:
       - name: Checkout
@@ -108,9 +107,9 @@ jobs:
         with:
           name: duckdb-node-x86_64-zip
 
-      # - uses: actions/download-artifact@v3
-      #   with:
-      #     name: duckdb-node-arm64-zip
+      - uses: actions/download-artifact@v3
+        with:
+          name: duckdb-node-arm64-zip
 
       - name: Install AWS CLI
         uses: unfor19/install-aws-cli-action@v1
@@ -122,9 +121,9 @@ jobs:
           AWS_EC2_METADATA_DISABLED: 'true'
         run: bash $GITHUB_WORKSPACE/publish_layer.sh x86_64
 
-      # - name: Publish layer for arm64
-      #   env:
-      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #     AWS_EC2_METADATA_DISABLED: 'true'
-      #   run: bash $GITHUB_WORKSPACE/publish_layer.sh arm64
+      - name: Publish layer for arm64
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_EC2_METADATA_DISABLED: 'true'
+        run: bash $GITHUB_WORKSPACE/publish_layer.sh arm64
