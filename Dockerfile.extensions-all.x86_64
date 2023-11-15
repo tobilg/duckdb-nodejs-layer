@@ -18,7 +18,7 @@ COPY src/duckdb_extension_config.cmake /tmp/from-git/duckdb/extension/extension_
 RUN cd /tmp/from-git/duckdb && \
   export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:/tmp/from-git/vcpkg:$PATH" && \
   make extension_configuration && \
-  yum install bison -y
+  yum install bison patch -y
 
 RUN cd /tmp/from-git/duckdb && \
   export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:/tmp/from-git/vcpkg:$PATH" && \

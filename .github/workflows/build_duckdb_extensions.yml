@@ -18,7 +18,7 @@ jobs:
       - name: Build extensions
         run: |
           # Create release folder
-          mkdir -p $PWD/release/v{$DUCKDB_VERSION}
+          mkdir -p $PWD/release/extensions/v{$DUCKDB_VERSION}
 
           # Run build
           docker build -t duckdb-all-extensions -f Dockerfile.extensions-all.x86_64 .
