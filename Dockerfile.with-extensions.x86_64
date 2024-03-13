@@ -36,8 +36,8 @@ RUN mkdir -p /tmp/build/nodejs/node_modules/duckdb/lib /tmp/build/nodejs/node_mo
 COPY release/extensions/v0.10.0/arrow.duckdb_extension.gz /tmp/build/nodejs/node_modules/duckdb/extensions/arrow.duckdb_extension.gz
 COPY release/extensions/v0.10.0/aws.duckdb_extension.gz /tmp/build/nodejs/node_modules/duckdb/extensions/aws.duckdb_extension.gz
 COPY release/extensions/v0.10.0/httpfs.duckdb_extension.gz /tmp/build/nodejs/node_modules/duckdb/extensions/httpfs.duckdb_extension.gz
-COPY release/extensions/v0.10.0/json.duckdb_extension.gz /tmp/build/nodejs/node_modules/duckdb/extensions/json.duckdb_extension.gz
-COPY release/extensions/v0.10.0/parquet.duckdb_extension.gz /tmp/build/nodejs/node_modules/duckdb/extensions/parquet.duckdb_extension.gz
+#COPY release/extensions/v0.10.0/json.duckdb_extension.gz /tmp/build/nodejs/node_modules/duckdb/extensions/json.duckdb_extension.gz
+#COPY release/extensions/v0.10.0/parquet.duckdb_extension.gz /tmp/build/nodejs/node_modules/duckdb/extensions/parquet.duckdb_extension.gz
 #COPY release/extensions/v0.10.0/spatial.duckdb_extension.gz /tmp/build/nodejs/node_modules/duckdb/extensions/spatial.duckdb_extension.gz
 
 # Unpack extensions
