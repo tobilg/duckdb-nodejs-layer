@@ -1,0 +1,60 @@
+# See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
+name: Build DuckDB Lambda Layers
+
+on:
+  workflow_dispatch:
+
+env:
+  DUCKDB_VERSION: '0.10.0'
+
+jobs:
+
+  build_duckdb_node_x86_64:
+    name: Build DuckDB Node Lambda layer for x86_64
+    runs-on: ubuntu-latest
+    env:
+      ARCHITECTURE: x86_64
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Build layer
+        run: |
+          # Create release folder
+          mkdir -p $PWD/release
+
+          # Run build
+          docker build --build-arg DUCKDB_VERSION=$DUCKDB_VERSION --build-arg ARCHITECTURE=$ARCHITECTURE -t duckdb-lambda-extensions-$ARCHITECTURE -f Dockerfile.with-extensions.$ARCHITECTURE .
+
+          # Copy release from image
+          docker run -v $PWD/release:/opt/mount --rm --entrypoint /bin/bash duckdb-lambda-extensions-$ARCHITECTURE -c "cp /tmp/release/duckdb-extensions-layer-$ARCHITECTURE.zip /opt/mount/"
+
+      - name: Upload DuckDB Node build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: duckdb-extensions-node-x86_64-zip
+          path: release/duckdb-extensions-layer-x86_64.zip
+
+  publish_layer_with_extensions:
+    name: Publish layer with extensions
+    runs-on: ubuntu-latest
+    needs: [build_duckdb_node_x86_64]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: duckdb-extensions-node-x86_64-zip
+
+      - name: Install AWS CLI
+        uses: unfor19/install-aws-cli-action@v1
+
+      - name: Publish layer for x86_64
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_EC2_METADATA_DISABLED: 'true'
+        run: bash $GITHUB_WORKSPACE/publish_extensions_layer.sh x86_64
