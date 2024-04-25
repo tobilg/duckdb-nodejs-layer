@@ -75,7 +75,7 @@ The following DuckDB default extensions are enabled and contained in the static 
 | 7               | v0.9.2         |
 | 8               | v0.10.0        |
 | 9               | v0.10.1        |
-| 20              | v0.10.2        |
+| 10              | v0.10.2        |
 
 The **ARNs** of the latest x86 version of the DuckDB Node.js Lambda layer are:
 | Region          | Layer ARN |
