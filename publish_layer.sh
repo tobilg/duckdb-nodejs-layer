@@ -38,7 +38,7 @@ fi
 
 for region in ${REGIONS[@]}; do
   # Exclude gov and cn regions
-  if [[ ${region} != *"gov"* && ${region} != *"cn"* ]];then
+  if [[ ${region} != *"gov"* && ${region} != *"cn"* && ${region} != "il-central-1" && ${region} != "ca-west-1" ]];then
     echo "Publishing $ARCHITECTURE layer to $region..."
 
     LAYER_ARN=$(aws lambda publish-layer-version --region $region --layer-name $LAYER_NAME --description "$DESCRIPTION" --compatible-runtimes $COMPATIBLE_RUNTIMES --compatible-architectures $COMPATIBLE_ARCHITECTURES --license MIT --zip-file fileb://duckdb-layer-$ARCHITECTURE.zip | jq -r .LayerVersionArn)
