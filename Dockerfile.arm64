@@ -1,6 +1,6 @@
 FROM public.ecr.aws/lambda/nodejs:16-arm64 as builder
 
-ARG DUCKDB_VERSION=0.10.1
+ARG DUCKDB_VERSION=0.10.2
 ARG ARCHITECTURE=arm64
 
 # Install dependencies
