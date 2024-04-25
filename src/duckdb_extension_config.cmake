@@ -21,7 +21,6 @@ if (NOT MINGW)
             LOAD_TESTS DONT_LINK
             GIT_URL https://github.com/duckdb/arrow
             GIT_TAG 9e10240da11f61ea7fbfe3fc9988ffe672ccd40f
-            APPLY_PATCHES
             )
 endif()
 
@@ -31,7 +30,6 @@ if (NOT MINGW)
             LOAD_TESTS
             GIT_URL https://github.com/duckdb/duckdb_aws
             GIT_TAG f7b8729f1cce5ada5d4add70e1486de50763fb97
-            APPLY_PATCHES
             )
 endif()
 
@@ -41,7 +39,6 @@ if (NOT MINGW)
             LOAD_TESTS
             GIT_URL https://github.com/duckdb/duckdb_azure
             GIT_TAG 09623777a366572bfb8fa53e47acdf72133a360e
-			APPLY_PATCHES
             )
 endif()
 
@@ -69,7 +66,6 @@ if (NOT MINGW)
             DONT_LINK
             GIT_URL https://github.com/duckdb/postgres_scanner
             GIT_TAG 96206f41d5ca7015920a66b54e936c986fe0b0f8
-            APPLY_PATCHES
             )
 endif()
 
@@ -94,7 +90,6 @@ duckdb_extension_load(sqlite_scanner
         ${STATIC_LINK_SQLITE} LOAD_TESTS
         GIT_URL https://github.com/duckdb/sqlite_scanner
         GIT_TAG 091197efb34579c7195afa43dfb5925023c915c0
-        APPLY_PATCHES
         )
 
 ################# SUBSTRAIT
@@ -103,7 +98,6 @@ if (NOT WIN32)
             LOAD_TESTS DONT_LINK
             GIT_URL https://github.com/duckdb/substrait
             GIT_TAG 1116fb580edd3e26e675436dbdbdf4a0aa5e456e
-            APPLY_PATCHES
             )
 endif()
 
