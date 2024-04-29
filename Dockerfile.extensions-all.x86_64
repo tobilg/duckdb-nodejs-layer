@@ -28,4 +28,4 @@ RUN mkdir -p /tmp/release && \
   cp /tmp/from-git/duckdb/build/release/extension/*/*.duckdb_extension /tmp/release
 
 # Strip binary
-RUN strip --strip-unneeded /tmp/release/*.duckdb_extension
+#RUN strip --strip-unneeded /tmp/release/*.duckdb_extension
