@@ -1,6 +1,6 @@
 FROM ghcr.io/tobilg/duckdb-nodejs-layer:main as builder
 
-ARG DUCKDB_VERSION=1.1.1
+ARG DUCKDB_VERSION=1.1.3
 ARG ARCHITECTURE=x86_64
 
 # Get DuckDB sources for specific commit
