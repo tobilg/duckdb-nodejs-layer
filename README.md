@@ -172,9 +172,8 @@ Currently, it's only available in `us-east-1`.
 | 4               | v0.10.2        |
 | 5               | v1.0.0         |
 | 6               | v1.1.0         |
-| 7               | v1.1.3         |
 
 The **ARNs** of the latest x86_64 version of the DuckDB Node.js Lambda layer with extensions are:
 | Region          | Layer ARN |
 |-----------------|-----------|
-| us-east-1 | arn:aws:lambda:us-east-1:041475135427:layer:duckdb-extensions-nodejs-x86:7 |
+| us-east-1 | arn:aws:lambda:us-east-1:041475135427:layer:duckdb-extensions-nodejs-x86:6 |
