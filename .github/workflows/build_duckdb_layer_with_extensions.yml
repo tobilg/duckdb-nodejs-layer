@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Build layer
         run: |
@@ -31,7 +31,7 @@ jobs:
           docker run -v $PWD/release:/opt/mount --rm --entrypoint /bin/bash duckdb-lambda-extensions-$ARCHITECTURE -c "cp /tmp/release/duckdb-extensions-layer-$ARCHITECTURE.zip /opt/mount/"
 
       - name: Upload DuckDB Node build artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: duckdb-extensions-node-x86_64-zip
           path: release/duckdb-extensions-layer-x86_64.zip
@@ -43,9 +43,9 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: duckdb-extensions-node-x86_64-zip
 

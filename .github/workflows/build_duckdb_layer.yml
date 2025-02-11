@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Build layer
         run: |
@@ -31,7 +31,7 @@ jobs:
           docker run -v $PWD/release:/opt/mount --rm --entrypoint /bin/bash duckdb-lambda-$ARCHITECTURE -c "cp /tmp/release/duckdb-layer-$ARCHITECTURE.zip /opt/mount/"
 
       - name: Upload DuckDB Node build artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: duckdb-node-x86_64-zip
           path: release/duckdb-layer-x86_64.zip
@@ -44,7 +44,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -66,7 +66,7 @@ jobs:
           docker run -v $PWD/release:/opt/mount --rm --entrypoint /bin/bash duckdb-lambda-$ARCHITECTURE -c "cp /tmp/release/duckdb-layer-$ARCHITECTURE.zip /opt/mount/"
 
       - name: Upload DuckDB Node build artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: duckdb-node-arm64-zip
           path: release/duckdb-layer-arm64.zip
@@ -85,7 +85,7 @@ jobs:
           node-version: '16.x'
           registry-url: 'https://registry.npmjs.org'
 
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: duckdb-node-x86_64-zip
 
