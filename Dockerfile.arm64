@@ -1,4 +1,4 @@
-FROM public.ecr.aws/lambda/nodejs:18-arm64 as builder
+FROM public.ecr.aws/lambda/nodejs:16-arm64 as builder
 
 ARG DUCKDB_VERSION=1.2.0
 ARG ARCHITECTURE=arm64
