@@ -71,28 +71,28 @@ jobs:
           name: duckdb-node-arm64-zip
           path: release/duckdb-layer-arm64.zip
 
-  # publish_npm_package_x86:
-  #   name: Publish duckdb-lambda npm x86 package
-  #   runs-on: ubuntu-latest
-  #   needs: [build_duckdb_node_x86_64]
+  publish_npm_package_x86:
+    name: Publish duckdb-lambda npm x86 package
+    runs-on: ubuntu-latest
+    needs: [build_duckdb_node_x86_64]
 
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
         
-  #     - uses: actions/setup-node@v3
-  #       with:
-  #         node-version: '16.x'
-  #         registry-url: 'https://registry.npmjs.org'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+          registry-url: 'https://registry.npmjs.org'
 
-  #     - uses: actions/download-artifact@v4
-  #       with:
-  #         name: duckdb-node-x86_64-zip
+      - uses: actions/download-artifact@v4
+        with:
+          name: duckdb-node-x86_64-zip
 
-  #     - name: Check for changes and eventually publish new package version
-  #       env:
-  #         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-  #       run: bash $GITHUB_WORKSPACE/publish_package.sh
+      - name: Check for changes and eventually publish new package version
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: bash $GITHUB_WORKSPACE/publish_package.sh
 
   publish_layer_without_extensions:
     name: Publish layer without extensions
