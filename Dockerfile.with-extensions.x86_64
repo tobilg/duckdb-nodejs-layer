@@ -1,6 +1,6 @@
 FROM amazon/aws-lambda-nodejs:18 as builder
 
-ARG DUCKDB_VERSION=1.2.0
+ARG DUCKDB_VERSION=1.2.1
 ARG ARCHITECTURE=x86_64
 
 # Install dependencies
@@ -33,9 +33,9 @@ COPY src/README.md /tmp/from-git/duckdb-node/README.md
 RUN mkdir -p /tmp/build/nodejs/node_modules/duckdb/lib /tmp/build/nodejs/node_modules/duckdb/release /tmp/build/nodejs/node_modules/duckdb/extensions /tmp/release
 
 # Integrate needed extensions
-COPY release/extensions/v1.2.0/arrow.duckdb_extension.gz /tmp/build/nodejs/node_modules/duckdb/extensions/arrow.duckdb_extension.gz
-COPY release/extensions/v1.2.0/aws.duckdb_extension.gz /tmp/build/nodejs/node_modules/duckdb/extensions/aws.duckdb_extension.gz
-COPY release/extensions/v1.2.0/httpfs.duckdb_extension.gz /tmp/build/nodejs/node_modules/duckdb/extensions/httpfs.duckdb_extension.gz
+COPY release/extensions/v1.2.1/arrow.duckdb_extension.gz /tmp/build/nodejs/node_modules/duckdb/extensions/arrow.duckdb_extension.gz
+COPY release/extensions/v1.2.1/aws.duckdb_extension.gz /tmp/build/nodejs/node_modules/duckdb/extensions/aws.duckdb_extension.gz
+COPY release/extensions/v1.2.1/httpfs.duckdb_extension.gz /tmp/build/nodejs/node_modules/duckdb/extensions/httpfs.duckdb_extension.gz
 
 # Unpack extensions
 RUN cd /tmp/build/nodejs/node_modules/duckdb/extensions && gunzip *.gz

@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 env:
-  DUCKDB_VERSION: '1.2.0'
+  DUCKDB_VERSION: '1.2.1'
 
 jobs:
   build_all_extensions:
