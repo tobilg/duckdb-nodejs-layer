@@ -1,4 +1,4 @@
-FROM amazon/aws-lambda-nodejs:18 as builder
+FROM amazon/aws-lambda-nodejs:20 as builder
 
 # Install dependencies
 RUN yum update -y && \
