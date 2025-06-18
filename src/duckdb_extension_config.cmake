@@ -19,15 +19,6 @@ duckdb_extension_load(httpfs
     INCLUDE_DIR extension/httpfs/include
     )
 
-################# AVRO
-if (NOT MINGW)
-    duckdb_extension_load(avro
-            LOAD_TESTS DONT_LINK
-            GIT_URL https://github.com/duckdb/duckdb-avro
-            GIT_TAG 1b53c8af9973b0267406ca5a24d7e0b52f22cec3
-    )
-endif()
-
 ################## AWS
 if (NOT MINGW AND NOT ${WASM_ENABLED})
     duckdb_extension_load(aws

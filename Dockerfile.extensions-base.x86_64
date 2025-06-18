@@ -24,7 +24,7 @@ RUN mkdir -p /tmp/from-git && \
   git clone https://github.com/Microsoft/vcpkg.git && \
   cd vcpkg && \
   git fetch --all --tags && \
-  git checkout 5e5d0e1cd7785623065e77eff011afdeec1a3574 && \
+  git checkout ce613c41372b23b1f51333815feb3edd87ef8a8b && \
   ./bootstrap-vcpkg.sh -disableMetrics
 
 # Prepare
