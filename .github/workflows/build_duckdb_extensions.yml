@@ -18,10 +18,10 @@ jobs:
       - name: Build extensions
         run: |
           # Create release folder
-          mkdir -p $PWD/release/extensions/v{$DUCKDB_VERSION}
+          mkdir -p $PWD/release/extensions/v{$DUCKDB_VERSION}/linux_amd64
 
           # Run build
           docker build -t duckdb-all-extensions -f Dockerfile.extensions-all.x86_64 .
 
           # Copy release from image
-          # docker run -v $PWD/release/extensions/v$DUCKDB_VERSION:/opt/mount --rm --entrypoint /bin/bash duckdb-all-extensions -c "cp /tmp/release/*.duckdb_extension /opt/mount/"
+          # docker run -v $PWD/release/extensions/v$DUCKDB_VERSION/linux_amd64:/opt/mount --rm --entrypoint /bin/bash duckdb-all-extensions -c "cp /tmp/release/*.duckdb_extension /opt/mount/"
