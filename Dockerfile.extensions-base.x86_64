@@ -9,7 +9,8 @@ RUN yum update -y && \
   yum remove cmake -y
 
 # Install recent cmake
-RUN cd /tmp && \
+RUN mkdir -p /tmp/from-git && \
+  cd /tmp/from-git && \
   wget https://github.com/Kitware/CMake/releases/download/v3.27.6/cmake-3.27.6.tar.gz && \
   tar -xvzf cmake-3.27.6.tar.gz && \
   cd cmake-3.27.6 && \
@@ -28,8 +29,7 @@ RUN yum remove ninja-build -y && \
   ln -s /tmp/from-git/ninja/build-cmake/ninja /usr/bin/ninja
 
 # Install vcpkg
-RUN mkdir -p /tmp/from-git && \
-  cd /tmp/from-git && \
+RUN cd /tmp/from-git && \
   git clone https://github.com/Microsoft/vcpkg.git && \
   cd vcpkg && \
   git fetch --all --tags && \
