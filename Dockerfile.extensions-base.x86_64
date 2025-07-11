@@ -26,7 +26,6 @@ RUN yum remove ninja-build -y && \
   cd ninja && \
   cmake -Bbuild-cmake -DBUILD_TESTING=OFF && \
   cmake --build build-cmake && \
-  rm /usr/bin/ninja && \
   ln -s /tmp/from-git/ninja/build-cmake/ninja /usr/bin/ninja
 
 # Install vcpkg
