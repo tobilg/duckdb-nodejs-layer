@@ -23,6 +23,7 @@ RUN mkdir -p /tmp/from-git && \
 RUN yum remove ninja-build -y && \
   cd /tmp/from-git && \
   git clone https://github.com/ninja-build/ninja.git && \
+  cd ninja && \
   cmake -Bbuild-cmake -DBUILD_TESTING=OFF && \
   cmake --build build-cmake && \
   rm /usr/bin/ninja && \
