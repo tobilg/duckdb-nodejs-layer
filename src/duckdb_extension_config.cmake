@@ -15,7 +15,7 @@ duckdb_extension_load(parquet)
 duckdb_extension_load(httpfs
     LOAD_TESTS
     GIT_URL https://github.com/duckdb/duckdb-httpfs
-    GIT_TAG 39779f89b16d0a35f04d3cfaf868e6366a2102f0
+    GIT_TAG af7bcaf40c775016838fef4823666bd18b89b36b
     INCLUDE_DIR extension/httpfs/include
     )
 
@@ -25,7 +25,7 @@ if (NOT MINGW AND NOT ${WASM_ENABLED})
             ### TODO: re-enable LOAD_TESTS
             LOAD_TESTS
             GIT_URL https://github.com/duckdb/duckdb-aws
-            GIT_TAG ce6a0965f4f67e82a7dc82ea0378b8b839a2a9aa
+            GIT_TAG b73faadeaa4d2c880deb949771baf570f42fe8cc
             )
 endif()
 
@@ -56,14 +56,14 @@ endif()
 duckdb_extension_load(ducklake
     DONT_LINK
     GIT_URL https://github.com/duckdb/ducklake
-    GIT_TAG 2d890446b33fe648c2d2135fe2e2f3b78419b6b7
+    GIT_TAG 9cc2d903c51d360ff3fc6afb10cf38f8eac2e25b
 )
 
 ################# EXCEL
 duckdb_extension_load(excel
     LOAD_TESTS
     GIT_URL https://github.com/duckdb/duckdb-excel
-    GIT_TAG 7e97933214d0c7de2315668ec68589ae85651afb
+    GIT_TAG cf00672f2d16685d9aefcca48c6a04d8c37d7015
     INCLUDE_DIR src/excel/include
     )
 
@@ -77,10 +77,9 @@ endif()
 
 if (NOT MINGW AND NOT ${WASM_ENABLED})
     duckdb_extension_load(iceberg
-#            ${LOAD_ICEBERG_TESTS} TODO: re-enable once autoloading test is fixed
            ${LOAD_ICEBERG_TESTS}
             GIT_URL https://github.com/duckdb/duckdb-iceberg
-            GIT_TAG 76fd8b092f9986f994ece37bb396dc89adf7b2cc
+            GIT_TAG 003a93fbb005a7fa2469400967a77db509595271
             )
 endif()
 
@@ -110,7 +109,7 @@ if (NOT MINGW AND ${BUILD_COMPLETE_EXTENSION_SET})
 duckdb_extension_load(spatial
     DONT_LINK LOAD_TESTS
     GIT_URL https://github.com/duckdb/duckdb-spatial
-    GIT_TAG 95ed129e22bf9b14f64c8d0bd8fd55f9ca0a9e61
+    GIT_TAG d1ffa8c21fe1f90064956a119491e6d6d993192a
     INCLUDE_DIR spatial/include
     TEST_DIR test/sql
     )
@@ -133,7 +132,7 @@ duckdb_extension_load(sqlite_scanner
 duckdb_extension_load(sqlsmith
         DONT_LINK LOAD_TESTS
         GIT_URL https://github.com/duckdb/duckdb-sqlsmith
-        GIT_TAG 06e8da8a95710c996fcd62f385962ccd36a363f6
+        GIT_TAG 3b1ad2bd7234c1143b4a819517873f4b465168d2
         )
 
 ################# VSS

@@ -1,6 +1,6 @@
 FROM ghcr.io/tobilg/duckdb-nodejs-layer:main AS builder
 
-ARG DUCKDB_VERSION=1.3.1
+ARG DUCKDB_VERSION=1.3.2
 ARG ARCHITECTURE=x86_64
 
 # Get DuckDB sources for specific commit
@@ -19,15 +19,6 @@ RUN cd /tmp/from-git/duckdb && \
   export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:/tmp/from-git/vcpkg:$PATH" && \
   make extension_configuration && \
   yum install bison patch -y
-
-# Install vcpkg
-RUN rm -rf /tmp/from-git/vcpkg && mkdir -p /tmp/from-git && \
-  cd /tmp/from-git && \
-  git clone https://github.com/Microsoft/vcpkg.git && \
-  cd vcpkg && \
-  git fetch --all --tags && \
-  git checkout ce613c41372b23b1f51333815feb3edd87ef8a8b && \
-  ./bootstrap-vcpkg.sh -disableMetrics
 
 RUN cd /tmp/from-git/duckdb && \
   export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:/tmp/from-git/vcpkg:$PATH" && \
