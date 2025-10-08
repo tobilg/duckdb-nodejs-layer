@@ -84,37 +84,38 @@ The following DuckDB default extensions are enabled and contained in the static 
 | 18              | v1.3.0         |
 | 19              | v1.3.1         |
 | 20              | v1.3.2         |
+| 21              | v1.4.1         |
 
 The **ARNs** of the latest x86 version of the DuckDB Node.js Lambda layer are:
 | Region          | Layer ARN |
 |-----------------|-----------|
-| af-south-1 | arn:aws:lambda:af-south-1:041475135427:layer:duckdb-nodejs-x86:20 |
-| ap-east-1 | arn:aws:lambda:ap-east-1:041475135427:layer:duckdb-nodejs-x86:20 |
-| ap-northeast-1 | arn:aws:lambda:ap-northeast-1:041475135427:layer:duckdb-nodejs-x86:20 |
-| ap-northeast-2 | arn:aws:lambda:ap-northeast-2:041475135427:layer:duckdb-nodejs-x86:20 |
-| ap-northeast-3 | arn:aws:lambda:ap-northeast-3:041475135427:layer:duckdb-nodejs-x86:20 |
-| ap-south-1 | arn:aws:lambda:ap-south-1:041475135427:layer:duckdb-nodejs-x86:20 |
-| ap-south-2 | arn:aws:lambda:ap-south-2:041475135427:layer:duckdb-nodejs-x86:20 |
-| ap-southeast-1 | arn:aws:lambda:ap-southeast-1:041475135427:layer:duckdb-nodejs-x86:20 |
-| ap-southeast-2 | arn:aws:lambda:ap-southeast-2:041475135427:layer:duckdb-nodejs-x86:20 |
-| ap-southeast-3 | arn:aws:lambda:ap-southeast-3:041475135427:layer:duckdb-nodejs-x86:20 |
-| ap-southeast-4 | arn:aws:lambda:ap-southeast-4:041475135427:layer:duckdb-nodejs-x86:20 |
-| ca-central-1 | arn:aws:lambda:ca-central-1:041475135427:layer:duckdb-nodejs-x86:20 |
-| eu-central-1 | arn:aws:lambda:eu-central-1:041475135427:layer:duckdb-nodejs-x86:20 |
-| eu-central-2 | arn:aws:lambda:eu-central-2:041475135427:layer:duckdb-nodejs-x86:20 |
-| eu-north-1 | arn:aws:lambda:eu-north-1:041475135427:layer:duckdb-nodejs-x86:20 |
-| eu-south-1 | arn:aws:lambda:eu-south-1:041475135427:layer:duckdb-nodejs-x86:20 |
-| eu-south-2 | arn:aws:lambda:eu-south-2:041475135427:layer:duckdb-nodejs-x86:20 |
-| eu-west-1 | arn:aws:lambda:eu-west-1:041475135427:layer:duckdb-nodejs-x86:20 |
-| eu-west-2 | arn:aws:lambda:eu-west-2:041475135427:layer:duckdb-nodejs-x86:20 |
-| eu-west-3 | arn:aws:lambda:eu-west-3:041475135427:layer:duckdb-nodejs-x86:20 |
-| me-central-1 | arn:aws:lambda:me-central-1:041475135427:layer:duckdb-nodejs-x86:20 |
-| me-south-1 | arn:aws:lambda:me-south-1:041475135427:layer:duckdb-nodejs-x86:20 |
-| sa-east-1 | arn:aws:lambda:sa-east-1:041475135427:layer:duckdb-nodejs-x86:20 |
-| us-east-1 | arn:aws:lambda:us-east-1:041475135427:layer:duckdb-nodejs-x86:20 |
-| us-east-2 | arn:aws:lambda:us-east-2:041475135427:layer:duckdb-nodejs-x86:20 |
-| us-west-1 | arn:aws:lambda:us-west-1:041475135427:layer:duckdb-nodejs-x86:20 |
-| us-west-2 | arn:aws:lambda:us-west-2:041475135427:layer:duckdb-nodejs-x86:20 |
+| af-south-1 | arn:aws:lambda:af-south-1:041475135427:layer:duckdb-nodejs-x86:21 |
+| ap-east-1 | arn:aws:lambda:ap-east-1:041475135427:layer:duckdb-nodejs-x86:21 |
+| ap-northeast-1 | arn:aws:lambda:ap-northeast-1:041475135427:layer:duckdb-nodejs-x86:21 |
+| ap-northeast-2 | arn:aws:lambda:ap-northeast-2:041475135427:layer:duckdb-nodejs-x86:21 |
+| ap-northeast-3 | arn:aws:lambda:ap-northeast-3:041475135427:layer:duckdb-nodejs-x86:21 |
+| ap-south-1 | arn:aws:lambda:ap-south-1:041475135427:layer:duckdb-nodejs-x86:21 |
+| ap-south-2 | arn:aws:lambda:ap-south-2:041475135427:layer:duckdb-nodejs-x86:21 |
+| ap-southeast-1 | arn:aws:lambda:ap-southeast-1:041475135427:layer:duckdb-nodejs-x86:21 |
+| ap-southeast-2 | arn:aws:lambda:ap-southeast-2:041475135427:layer:duckdb-nodejs-x86:21 |
+| ap-southeast-3 | arn:aws:lambda:ap-southeast-3:041475135427:layer:duckdb-nodejs-x86:21 |
+| ap-southeast-4 | arn:aws:lambda:ap-southeast-4:041475135427:layer:duckdb-nodejs-x86:21 |
+| ca-central-1 | arn:aws:lambda:ca-central-1:041475135427:layer:duckdb-nodejs-x86:21 |
+| eu-central-1 | arn:aws:lambda:eu-central-1:041475135427:layer:duckdb-nodejs-x86:21 |
+| eu-central-2 | arn:aws:lambda:eu-central-2:041475135427:layer:duckdb-nodejs-x86:21 |
+| eu-north-1 | arn:aws:lambda:eu-north-1:041475135427:layer:duckdb-nodejs-x86:21 |
+| eu-south-1 | arn:aws:lambda:eu-south-1:041475135427:layer:duckdb-nodejs-x86:21 |
+| eu-south-2 | arn:aws:lambda:eu-south-2:041475135427:layer:duckdb-nodejs-x86:21 |
+| eu-west-1 | arn:aws:lambda:eu-west-1:041475135427:layer:duckdb-nodejs-x86:21 |
+| eu-west-2 | arn:aws:lambda:eu-west-2:041475135427:layer:duckdb-nodejs-x86:21 |
+| eu-west-3 | arn:aws:lambda:eu-west-3:041475135427:layer:duckdb-nodejs-x86:21 |
+| me-central-1 | arn:aws:lambda:me-central-1:041475135427:layer:duckdb-nodejs-x86:21 |
+| me-south-1 | arn:aws:lambda:me-south-1:041475135427:layer:duckdb-nodejs-x86:21 |
+| sa-east-1 | arn:aws:lambda:sa-east-1:041475135427:layer:duckdb-nodejs-x86:21 |
+| us-east-1 | arn:aws:lambda:us-east-1:041475135427:layer:duckdb-nodejs-x86:21 |
+| us-east-2 | arn:aws:lambda:us-east-2:041475135427:layer:duckdb-nodejs-x86:21 |
+| us-west-1 | arn:aws:lambda:us-west-1:041475135427:layer:duckdb-nodejs-x86:21 |
+| us-west-2 | arn:aws:lambda:us-west-2:041475135427:layer:duckdb-nodejs-x86:21 |
 
 ## arm64 layer ARNs
 
@@ -138,32 +139,33 @@ The **ARNs** of the latest x86 version of the DuckDB Node.js Lambda layer are:
 | 16              | v1.3.0         |
 | 17              | v1.3.1         |
 | 18              | v1.3.2         |
+| 19              | v1.4.1         |
 
 The **ARNs** of the latest arm64 version of the DuckDB Node.js Lambda layer are:
 | Region          | Layer ARN |
 |-----------------|-----------|
-| us-east-1 | arn:aws:lambda:us-east-1:041475135427:layer:duckdb-nodejs-arm64:18 |
-| us-east-2 | arn:aws:lambda:us-east-2:041475135427:layer:duckdb-nodejs-arm64:18 |
-| us-west-1 | arn:aws:lambda:us-west-1:041475135427:layer:duckdb-nodejs-arm64:18 |
-| us-west-2 | arn:aws:lambda:us-west-2:041475135427:layer:duckdb-nodejs-arm64:18 |
-| af-south-1 | arn:aws:lambda:af-south-1:041475135427:layer:duckdb-nodejs-arm64:18 |
-| ap-east-1 | arn:aws:lambda:ap-east-1:041475135427:layer:duckdb-nodejs-arm64:18 |
-| ap-southeast-3 | arn:aws:lambda:ap-southeast-3:041475135427:layer:duckdb-nodejs-arm64:18 |
-| ap-south-1 | arn:aws:lambda:ap-south-1:041475135427:layer:duckdb-nodejs-arm64:18 |
-| ap-northeast-3 | arn:aws:lambda:ap-northeast-3:041475135427:layer:duckdb-nodejs-arm64:18 |
-| ap-northeast-2 | arn:aws:lambda:ap-northeast-2:041475135427:layer:duckdb-nodejs-arm64:18 |
-| ap-southeast-1 | arn:aws:lambda:ap-southeast-1:041475135427:layer:duckdb-nodejs-arm64:18 |
-| ap-southeast-2 | arn:aws:lambda:ap-southeast-2:041475135427:layer:duckdb-nodejs-arm64:18 |
-| ap-northeast-1 | arn:aws:lambda:ap-northeast-1:041475135427:layer:duckdb-nodejs-arm64:18 |
-| ca-central-1 | arn:aws:lambda:ca-central-1:041475135427:layer:duckdb-nodejs-arm64:18 |
-| eu-central-1 | arn:aws:lambda:eu-central-1:041475135427:layer:duckdb-nodejs-arm64:18 |
-| eu-west-1 | arn:aws:lambda:eu-west-1:041475135427:layer:duckdb-nodejs-arm64:18 |
-| eu-west-2 | arn:aws:lambda:eu-west-2:041475135427:layer:duckdb-nodejs-arm64:18 |
-| eu-south-1 | arn:aws:lambda:eu-south-1:041475135427:layer:duckdb-nodejs-arm64:18 |
-| eu-west-3 | arn:aws:lambda:eu-west-3:041475135427:layer:duckdb-nodejs-arm64:18 |
-| eu-north-1 | arn:aws:lambda:eu-north-1:041475135427:layer:duckdb-nodejs-arm64:18 |
-| me-south-1 | arn:aws:lambda:me-south-1:041475135427:layer:duckdb-nodejs-arm64:18 |
-| sa-east-1 | arn:aws:lambda:sa-east-1:041475135427:layer:duckdb-nodejs-arm64:18 |
+| us-east-1 | arn:aws:lambda:us-east-1:041475135427:layer:duckdb-nodejs-arm64:19 |
+| us-east-2 | arn:aws:lambda:us-east-2:041475135427:layer:duckdb-nodejs-arm64:19 |
+| us-west-1 | arn:aws:lambda:us-west-1:041475135427:layer:duckdb-nodejs-arm64:19 |
+| us-west-2 | arn:aws:lambda:us-west-2:041475135427:layer:duckdb-nodejs-arm64:19 |
+| af-south-1 | arn:aws:lambda:af-south-1:041475135427:layer:duckdb-nodejs-arm64:19 |
+| ap-east-1 | arn:aws:lambda:ap-east-1:041475135427:layer:duckdb-nodejs-arm64:19 |
+| ap-southeast-3 | arn:aws:lambda:ap-southeast-3:041475135427:layer:duckdb-nodejs-arm64:19 |
+| ap-south-1 | arn:aws:lambda:ap-south-1:041475135427:layer:duckdb-nodejs-arm64:19 |
+| ap-northeast-3 | arn:aws:lambda:ap-northeast-3:041475135427:layer:duckdb-nodejs-arm64:19 |
+| ap-northeast-2 | arn:aws:lambda:ap-northeast-2:041475135427:layer:duckdb-nodejs-arm64:19 |
+| ap-southeast-1 | arn:aws:lambda:ap-southeast-1:041475135427:layer:duckdb-nodejs-arm64:19 |
+| ap-southeast-2 | arn:aws:lambda:ap-southeast-2:041475135427:layer:duckdb-nodejs-arm64:19 |
+| ap-northeast-1 | arn:aws:lambda:ap-northeast-1:041475135427:layer:duckdb-nodejs-arm64:19 |
+| ca-central-1 | arn:aws:lambda:ca-central-1:041475135427:layer:duckdb-nodejs-arm64:19 |
+| eu-central-1 | arn:aws:lambda:eu-central-1:041475135427:layer:duckdb-nodejs-arm64:19 |
+| eu-west-1 | arn:aws:lambda:eu-west-1:041475135427:layer:duckdb-nodejs-arm64:19 |
+| eu-west-2 | arn:aws:lambda:eu-west-2:041475135427:layer:duckdb-nodejs-arm64:19 |
+| eu-south-1 | arn:aws:lambda:eu-south-1:041475135427:layer:duckdb-nodejs-arm64:19 |
+| eu-west-3 | arn:aws:lambda:eu-west-3:041475135427:layer:duckdb-nodejs-arm64:19 |
+| eu-north-1 | arn:aws:lambda:eu-north-1:041475135427:layer:duckdb-nodejs-arm64:19 |
+| me-south-1 | arn:aws:lambda:me-south-1:041475135427:layer:duckdb-nodejs-arm64:19 |
+| sa-east-1 | arn:aws:lambda:sa-east-1:041475135427:layer:duckdb-nodejs-arm64:19 |
 
 
 ## x86_64 layer with arrow, aws and httpfs extensions ARNs
